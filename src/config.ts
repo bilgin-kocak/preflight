@@ -8,6 +8,7 @@ const schema=z.object({
   CELO_RPC_URL:z.url().default('https://forno.celo.org'),
   DATABASE_PATH:z.string().default('data/preflight.sqlite'),
   AGENT_ADDRESS:address.optional(), ATTRIBUTION_TAG:z.string().optional(), X402_API_KEY:z.string().min(1).optional(),
+  ERC8004_AGENT_ID:z.string().regex(/^\d+$/).optional(),
   ETHERSCAN_API_KEY:z.string().optional(), CELOSCAN_API_KEY:z.string().optional(),
   PAYMENTS_ENABLED:z.enum(['true','false']).default('false'),
   // Enable only behind Railway's edge, which supplies this header. Never trust arbitrary X-Forwarded-For.

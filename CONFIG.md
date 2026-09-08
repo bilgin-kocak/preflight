@@ -90,3 +90,9 @@ All entries below were fetched from `/api/v2/addresses/{address}` on **celo.bloc
 ## Launch state
 
 No tag, identity ID, paid reviews, settlement, funding transfer or public URL is claimed until it actually exists. No secrets belong in this file. Day 1's signed reports, batch, contract checks, tags endpoint, attestation contract, CLI and MCP are deferred per section 9 (Days 2–4).
+
+## Additional Day 1 integration checks
+
+- Identity registry `register(string)` and `Registered(uint256 indexed agentId,string agentURI,address indexed owner)` confirmed from its verified implementation ABI: https://celo.blockscout.com/api/v2/smart-contracts/0x7274e874CA62410a93Bd8bf61c69d8045E399c02 ; proxy mapping confirmed at https://celo.blockscout.com/api/v2/smart-contracts/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432 . No implementation address is a transaction destination.
+- Current registration JSON uses `type: https://eips.ethereum.org/EIPS/eip-8004#registration-v1`, `services`, `x402Support`, and `registrations`; empty registrations explicitly denotes the pending local identity. Source: https://eips.ethereum.org/EIPS/eip-8004 .
+- Railway supplies `X-Real-IP` at its public edge. Trust enabled only for Railway deployment. Source: https://docs.railway.com/networking/public-networking/specs-and-limits . Its volumes mount root-owned; the documented root override was rejected by automatic approval review and not applied. Source: https://docs.railway.com/volumes .

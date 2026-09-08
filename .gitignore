@@ -11,3 +11,6 @@ data/
 coverage/
 .DS_Store
 .askbots/
+
+.secrets/
+.railway/

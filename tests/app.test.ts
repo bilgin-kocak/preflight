@@ -37,6 +37,9 @@ function setup(enabled=true) {
  return {app,request,payment,store,provider,facilitator};
 }
 describe('Day 1 HTTP API',()=>{
+ it('serves an honest ERC-8004 registration document without invented identities',async()=>{
+  const {app}=setup(false);const r=await app.request('/.well-known/agent.json');expect(r.status).toBe(200);const j=await r.json();expect(j.type).toBe('https://eips.ethereum.org/EIPS/eip-8004#registration-v1');expect(j.registrations).toEqual([]);expect(j.x402Support).toBe(false);
+ });
  it('validates before payment and emits actionable errors',async()=>{
   const {request,facilitator}=setup(); const r=await request('/v1/counterparty',{address:'oops'});expect(r.status).toBe(400);expect((await r.json()).error.hint).toBeTruthy();expect(facilitator.verify).not.toHaveBeenCalled();
  });

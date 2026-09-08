@@ -10,7 +10,7 @@ import type {Store} from './cache.js';
 import type {Config} from './config.js';
 import type {Observation} from './providers/types.js';
 import {evaluate,preview,type CheckInput} from './checks/counterparty.js';
-import {CUTOFF,NETWORK,USDC} from './chain.js';
+import {CUTOFF,NETWORK,IDENTITY_REGISTRY} from './chain.js';
 import {decodePayment,paymentGate,paymentIdentity} from './x402.js';
 const addr=z.string().refine(v=>isAddress(v,{strict:false}) && !/^0x0{40}$/i.test(v),'Expected a nonzero Celo address');
 const requestSchema=z.object({address:addr,project_wallets:z.array(addr).max(100).optional(),dominant_funders:z.array(addr).max(100).optional(),cutoff:z.iso.datetime({offset:true}).refine(t=>Date.parse(t)>=Date.parse('2020-04-22T00:00:00Z') && Date.parse(t)<=Date.now(),'Cutoff must be in Celo history, not the future').optional()}).strict();
@@ -47,6 +47,13 @@ export function createApp(d:Dependencies) {
     d.store.put('health',body,15000);return c.json(body,ok?200:503);
   });
   for(const route of ['/skill.md','/v1/skill.md'])app.get(route,c=>c.text(d.skill.replaceAll('{{BASE_URL}}',d.config.PUBLIC_BASE_URL.replace(/\/$/,''))));
+  app.get('/.well-known/agent.json',c=>c.json({
+    type:'https://eips.ethereum.org/EIPS/eip-8004#registration-v1',name:'Preflight',
+    description:'Celo counterparty preflight signals. Free preview and optional 0.005 USDC checks. Heuristics, not an audit.',
+    services:[{name:'web',endpoint:d.config.PUBLIC_BASE_URL},{name:'skill',endpoint:`${d.config.PUBLIC_BASE_URL}/skill.md`},{name:'HTTP',endpoint:`${d.config.PUBLIC_BASE_URL}/v1/preview/counterparty`}],
+    x402Support:paid,active:true,registrations:d.config.ERC8004_AGENT_ID?[{agentId:d.config.ERC8004_AGENT_ID,agentRegistry:`${NETWORK}:${IDENTITY_REGISTRY}`}]:[],supportedTrust:[],
+    ...(d.config.AGENT_ADDRESS?{payTo:d.config.AGENT_ADDRESS}:{}),registration_pending:!d.config.ERC8004_AGENT_ID,
+  }));
   const validate=async(c:Context<Env>,next:()=>Promise<void>)=>{
     let json:unknown;try{json=await c.req.json();}catch{return c.json(error('INVALID_JSON','Expected a JSON request body.','Use Content-Type: application/json and a JSON object with address.'),400);}
     const parsed=requestSchema.safeParse(json);if(!parsed.success)return c.json(error('INVALID_REQUEST','Invalid address, cutoff or context fields.','Send a nonzero 0x address; optional project_wallets/dominant_funders arrays (max 100 each) and a past ISO-8601 cutoff.'),400);
