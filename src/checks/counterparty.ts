@@ -3,7 +3,7 @@ import type {Observation} from '../providers/types.js';
 export type CheckInput={address:string;project_wallets?:string[];dominant_funders?:string[];cutoff?:string};
 export function evaluate(o:Observation,input:CheckInput) {
   const cutoff=input.cutoff??CUTOFF;
-  const active=o.firstActivity ? Date.parse(o.firstActivity.at)<Date.parse(cutoff) : o.historyComplete?false:null;
+  const active=o.firstActivity && Date.parse(o.firstActivity.at)<Date.parse(cutoff) ? true : o.historyComplete?false:null;
   const has=(list:string[]|undefined,addr:string|undefined)=>!!addr && !!list?.some(a=>a.toLowerCase()===addr.toLowerCase());
   const self=has(input.project_wallets,input.address);
   const ownFunding=has(input.project_wallets,o.firstFunder?.address);

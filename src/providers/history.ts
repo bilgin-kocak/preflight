@@ -25,13 +25,19 @@ const time=(r:ExplorerRow)=>new Date(Number(r.timeStamp)*1000).toISOString();
 export function normalizeHistory(address:string,streams:History[]) {
   const rows=streams.flatMap(s=>s.rows).filter(successful).sort((a,b)=>Number(a.timeStamp)-Number(b.timeStamp)||Number(a.blockNumber)-Number(b.blockNumber)||Number(a.transactionIndex??0)-Number(b.transactionIndex??0));
   const earliest=rows[0];
-  const funded=rows.find(r=>r.to?.toLowerCase()===address.toLowerCase() && r.from?.toLowerCase()!==address.toLowerCase() && !/^0x0{40}$/i.test(r.from??'') && isAddress(r.from??'',{strict:false}) && BigInt(r.value??'0')>0n);
+  const incoming=rows.filter(r=>r.to?.toLowerCase()===address.toLowerCase() && r.from?.toLowerCase()!==address.toLowerCase() && !/^0x0{40}$/i.test(r.from??'') && isAddress(r.from??'',{strict:false}) && BigInt(r.value??'0')>0n);
+  const funded=incoming[0];
+  // Missing indices on internal transfers cannot be treated as transaction index zero.
+  // Competing same-block transfers with unresolved order keep first-funder evidence uncertain.
+  const unordered=!!funded && incoming.some(r=>r!==funded && r.blockNumber===funded.blockNumber &&
+    (r.from?.toLowerCase()!==funded.from?.toLowerCase() || r.value!==funded.value || (r.hash??r.transactionHash)!==(funded.hash??funded.transactionHash)) &&
+    (r.transactionIndex===undefined || funded.transactionIndex===undefined || r.transactionIndex===funded.transactionIndex));
   const complete=streams.every(s=>s.complete);
   const decimals=Number(funded?.tokenDecimal??18);
   return {
     firstActivity:earliest?{at:time(earliest),block:Number(earliest.blockNumber)}:null,
     firstFunder:funded && Number.isInteger(decimals) && decimals>=0 && decimals<=255 ? {address:funded.from!,token:funded.tokenSymbol??'CELO',amount:formatUnits(BigInt(funded.value!),decimals),at:time(funded)}:null,
-    firstFunderComplete:complete,historyComplete:complete,
+    firstFunderComplete:complete && !unordered,historyComplete:complete,
   };
 }
 export function activityTimes(streams:History[]) {

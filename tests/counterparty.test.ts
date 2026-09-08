@@ -20,6 +20,9 @@ describe('counterparty verdicts',()=>{
   expect(evaluate(base,{address:a,project_wallets:[p]}).verdict).toBe('ambiguous');
   expect(evaluate({...base,isContract:true},input).verdict).toBe('ambiguous');
  });
+ it('keeps missing pre-cutoff activity unknown with partial history',()=>{
+  expect(evaluate({...base,historyComplete:false,firstActivity:{at:'2026-09-01T00:00:00Z',block:100}},input).active_before_cutoff).toBeNull();
+ });
  it('strictly excludes cutoff timestamp from pre-existing activity',()=>{
   const r=evaluate({...base,firstActivity:{at:'2026-08-28T00:00:00Z',block:75974442}},input);
   expect(r.active_before_cutoff).toBe(false);expect(r.verdict).toBe('ambiguous');
@@ -40,6 +43,11 @@ describe('history evidence',()=>{
   const row=(ts:string,from:string,to:string,value:string)=>({timeStamp:ts,blockNumber:ts,from,to,value,isError:'0',hash:'0x1'});
   const o=normalizeHistory(a,[{rows:[row('10',f,a,'0'),row('20',f,a,'1000000000000000000')],complete:true},{rows:[{...row('15',p,a,'5000000'),tokenSymbol:'USDC',tokenDecimal:'6'}],complete:true},{rows:[{...row('5',f,a,'1'),isError:'1'}],complete:true}]);
   expect(o.firstFunder?.address).toBe(p);expect(o.firstFunder?.amount).toBe('5');expect(o.firstFunderComplete).toBe(true);
+ });
+ it('does not choose a certain first funder when same-block transfer ordering is missing',()=>{
+  const native={timeStamp:'1',blockNumber:'1',transactionIndex:'1',from:p,to:a,value:'1'};
+  const internal={timeStamp:'1',blockNumber:'1',from:f,to:a,value:'1'};
+  expect(normalizeHistory(a,[{rows:[native],complete:true},{rows:[internal],complete:true}]).firstFunderComplete).toBe(false);
  });
  it('does not assert first-funder certainty when a stream was truncated',()=>{
   const r={timeStamp:'1',blockNumber:'1',from:f,to:a,value:'1'};

@@ -1,10 +1,11 @@
 import {z} from 'zod';
-import {getJson,type Fetcher} from './http.js';
+import {getJson,pacedFetch,type Fetcher} from './http.js';
 import {activityTimes,history,normalizeHistory} from './history.js';
 import type {Provider,Observation} from './types.js';
 export class BlockscoutProvider implements Provider {
   name='blockscout';
-  constructor(private fetcher:Fetcher=fetch,private base='https://celo.blockscout.com') {}
+  private fetcher:Fetcher;
+  constructor(fetcher:Fetcher=fetch,private base='https://celo.blockscout.com') {this.fetcher=pacedFetch(fetcher);}
   async inspect(address:string,cutoffBlock:number):Promise<Observation> {
     const oldest=Promise.all(['txlist','tokentx','txlistinternal'].map(action=>history(`${this.base}/api`,address,action,{},this.fetcher)));
     const recent=Promise.all(['txlist','tokentx','txlistinternal'].map(action=>history(`${this.base}/api`,address,action,{},this.fetcher,cutoffBlock)));
