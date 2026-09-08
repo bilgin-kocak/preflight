@@ -54,7 +54,7 @@ Never retry a possibly settled authorization blindly. Preflight stores nonce res
 
 ## Evidence and errors
 
-`first_tx_at` is the earliest successful activity observed across normal transactions, token transfers and internal transfers; it may be an incoming transfer rather than a signed transaction. `active_before_cutoff` is true only for observed timestamps strictly before cutoff. Funding ignores zero-value, failed, self and mint-origin transfers; token identity labels come from explorer metadata and are not an allowlist. The history cap is 500 records per stream. Recent days may be a lower bound. Read `coverage` before interpreting a result. Data is cached for one hour; `observed_at` shows its age. The immutable-facts cache accepts only complete history evidence.
+`first_tx_at` is the earliest successful activity observed across normal transactions, token transfers and internal transfers; it may be an incoming transfer rather than a signed transaction. `active_before_cutoff` is true only for observed timestamps strictly before cutoff. Funding ignores zero-value, failed, self and mint-origin transfers; token identity labels come from explorer metadata and are not an allowlist. The history cap is 500 records per stream. If legacy oldest-history access fails, the service falls back to Blockscout v2 observations and marks full-history/first-funder coverage incomplete. Recent days may be a lower bound. Read `coverage` before interpreting a result. Data is cached for one hour; `observed_at` shows its age. The immutable-facts cache accepts only complete history evidence.
 
 Errors are `{ "error": { "code": "...", "message": "...", "hint": "..." } }`.
 

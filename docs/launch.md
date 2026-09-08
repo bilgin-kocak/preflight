@@ -11,6 +11,7 @@ Configured Railway domain: https://preflight-production-9071.up.railway.app (ver
 - Agent public address: `0x7a1f16230c5F3fD3b50C435fa93035eE789eE789`.
 - Reviewer public address: `0x001bEB8140ce3372646d3197c92F3055694e1E13`.
 - No wallet funding, registration, mainnet writes, payments, reviews or earnings claimed.
+- AskBots CLI dry-run succeeded: `ok=true`, `dryRun=true`, `executed=false`, 10 reviews costing 1.10 USDT.
 
 ## Registration prerequisites
 
@@ -48,7 +49,7 @@ railway up --service preflight --detach
 
 Deploy only one replica. Set `DATABASE_PATH=/data/preflight.sqlite`, `PORT=3000`, and `TRUST_RAILWAY_PROXY=true` for Railway's documented edge-supplied X-Real-IP. Do not enable that trust setting on a directly exposed Node server.
 
-Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. Automatic approval review rejected that root override; it has not been applied. Keep the image non-root. If the volume is not writable, deployment remains blocked until its permissions or an explicitly approved runtime policy are resolved. Do not silently switch payment state to ephemeral storage.
+Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. Automatic approval review rejected that root override; it has not been applied. Keep the image non-root. The first deployment built successfully, then failed with `SQLITE_CANTOPEN` because the mounted volume is not writable. Deployment remains blocked until its permissions or an explicitly approved runtime policy are resolved. Do not silently switch payment state to ephemeral storage.
 
 Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/public-networking/specs-and-limits .
 
@@ -66,3 +67,10 @@ That is a dry-run cost preview: 10 reviews cost 1.10 USDT. It does not create, f
 ## Evidence for the next day
 
 Keep real settlement rows in SQLite's `payments` table. Pending rows may have an uncertain on-chain outcome; reconcile before any fresh authorization. Do not delete the database during deployment. Record AskBots findings and the subsequent fixes when real reviews arrive; there are none to invent now.
+
+## Verification recorded on 2026-09-08
+
+- Full check: 29 tests, strict TypeScript check and production build pass.
+- Independent code review identified and fixed uncertain same-block funder ordering, incomplete-history negative claims and potential credential-bearing RPC error logging.
+- Read-only live smoke passed with v2 fallback: known wallet activity at 2024-03-08 22:36:17 UTC; degraded cold request about 4.3 seconds. The sub-3-second p95 target is not yet established.
+- No API keys or private keys were committed. Local wallet directory/file permissions checked as 0700/0600.

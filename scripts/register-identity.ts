@@ -45,4 +45,5 @@ async function main(){
   const result={hash,agentId:event.args.agentId.toString(),tag,tagVerified:true,feeCurrency:'USDC',agentUrl:`https://8004scan.io/agents/celo/${event.args.agentId}`};
   writeFileSync(statePath,JSON.stringify(result,null,2),{mode:0o600});console.log(JSON.stringify(result,null,2));
 }
-main().catch(e=>{console.error(e instanceof Error?e.message:'Registration failed');process.exitCode=1;});
+// Viem errors may embed credential-bearing RPC URLs. Never print raw upstream errors.
+main().catch(()=>{console.error('Identity operation stopped. Check AGENT_URI, assigned tag, wallet/address, zero CELO and USDC gas budget. Inspect data/identity-*.json and its transaction hash before retrying. RPC error details are suppressed to protect credentials.');process.exitCode=1;});
