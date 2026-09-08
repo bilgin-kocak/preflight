@@ -59,6 +59,8 @@ Tests cover payment signatures, failed settlement, concurrent replay, provider o
 
 ## Deploy
 
-Dockerfile and `railway.json` are included. Use one replica and a persistent volume at `/data`; SQLite contains payment replay records and quotas and must survive redeploys. Railway's edge supplies `X-Real-IP`; only set `TRUST_RAILWAY_PROXY=true` there. The Docker image runs as the non-root `node` user. See [launch steps](docs/launch.md) for volume permissions and pending external setup.
+Dockerfile and `railway.json` are included. Use one replica and a persistent volume at `/data`; SQLite contains payment replay records and quotas and must survive redeploys. Railway's edge supplies `X-Real-IP`; only set `TRUST_RAILWAY_PROXY=true` there. The Docker image defaults to the non-root `node` user; the dedicated Railway service uses the explicitly approved `RAILWAY_RUN_UID=0` override for volume access. See [launch steps](docs/launch.md) for deployment verification and pending external setup.
+
+The [live free preview service](https://preflight-production-9071.up.railway.app) is available. Payments and identity registration remain pending.
 
 Day 2+ features are intentionally absent: signed reports, batch, contract checks, tags endpoint, attestations, MCP, CLI and OpenAPI. The service is an API, with a JSON discovery response at `/`.

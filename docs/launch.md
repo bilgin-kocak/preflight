@@ -1,7 +1,7 @@
 # Day 1 launch runbook
 
 Public source: https://github.com/bilgin-kocak/preflight .
-Configured Railway domain: https://preflight-production-9071.up.railway.app (verify deployment health before treating it as live).
+Live Railway domain: https://preflight-production-9071.up.railway.app (verified 2026-09-08; free preview active, payments disabled).
 
 ## Completed locally
 
@@ -49,7 +49,9 @@ railway up --service preflight --detach
 
 Deploy only one replica. Set `DATABASE_PATH=/data/preflight.sqlite`, `PORT=3000`, and `TRUST_RAILWAY_PROXY=true` for Railway's documented edge-supplied X-Real-IP. Do not enable that trust setting on a directly exposed Node server.
 
-Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. Automatic approval review rejected that root override; it has not been applied. Keep the image non-root. The first deployment built successfully, then failed with `SQLITE_CANTOPEN` because the mounted volume is not writable. Deployment remains blocked until its permissions or an explicitly approved runtime policy are resolved. Do not silently switch payment state to ephemeral storage.
+Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. The first deployment failed with `SQLITE_CANTOPEN`. After explicit user approval on 2026-09-08, `RAILWAY_RUN_UID=0` was applied to this dedicated production service. The Dockerfile still defaults to the non-root `node` user; Railway overrides the runtime UID to root so SQLite can use the persistent `/data` volume. Keep that volume across deployments; do not switch payment state to ephemeral storage.
+
+Deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c`. Public `/health`, `/skill.md`, and `/.well-known/agent.json` returned HTTP 200. A real `/v1/preview/counterparty` request returned HTTP 200 in about 2.1 seconds; this single measurement does not establish p95 latency. `/v1/counterparty` correctly returned HTTP 503 with `PAYMENTS_UNAVAILABLE`. Identity registration remains pending, and no payment or mainnet transaction was sent.
 
 Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/public-networking/specs-and-limits .
 
