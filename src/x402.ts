@@ -53,6 +53,6 @@ export function paymentGate(config:Config,store:Store,facilitator?:FacilitatorCl
     const h={'X-API-Key':config.X402_API_KEY!};return {verify:h,settle:h,supported:h};
   }});
   const server=new x402ResourceServer(durableFacilitator(delegate,store)).register(NETWORK,new ExactEvmScheme());
-  const routes:RoutesConfig={'POST /v1/counterparty':{accepts:{scheme:'exact',network:NETWORK,payTo:config.AGENT_ADDRESS!,price:{amount:'5000',asset:USDC,extra:{name:'USDC',version:'2'}},maxTimeoutSeconds:300},description:'Celo counterparty preflight signals',mimeType:'application/json'}};
+  const routes:RoutesConfig={'POST /v1/counterparty':{resource:`${config.PUBLIC_BASE_URL.replace(/\/$/,'')}/v1/counterparty`,accepts:{scheme:'exact',network:NETWORK,payTo:config.AGENT_ADDRESS!,price:{amount:'5000',asset:USDC,extra:{name:'USDC',version:'2'}},maxTimeoutSeconds:300},description:'Celo counterparty preflight signals',mimeType:'application/json'}};
   return paymentMiddleware(routes,server);
 }

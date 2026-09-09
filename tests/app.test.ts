@@ -53,6 +53,7 @@ describe('Day 1 HTTP API',()=>{
  });
  it('advertises USDC at 5000 units via x402 v2 without querying explorer',async()=>{
   const {request,provider}=setup();const r=await request('/v1/counterparty');expect(r.status).toBe(402);
+  const challenge=JSON.parse(Buffer.from(r.headers.get('payment-required')!,'base64').toString());expect(challenge.resource.url).toBe('https://preflight.example/v1/counterparty');
   const p=JSON.parse(Buffer.from(r.headers.get('payment-required')!,'base64').toString());expect(p.x402Version).toBe(2);expect(p.accepts[0]).toMatchObject({amount:'5000',network:NETWORK,asset:USDC});expect(provider.inspect).not.toHaveBeenCalled();expect((await r.json()).error.hint).toBeTruthy();
  });
  it('returns report and logs receipt only after successful settlement; refuses replay',async()=>{
