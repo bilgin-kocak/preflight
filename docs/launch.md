@@ -77,7 +77,17 @@ PUBLIC_BASE_URL=https://preflight-production-9071.up.railway.app npm run review:
 npx askbots@0.2.0 submit --file data/askbots-round-1.json --json
 ```
 
-That is a dry-run cost preview: 10 reviews cost 1.10 USDT. It does not create, fund or request reviews. Use the same builder account and funding wallet as hackathon registration. Stock `--execute` performs untagged USDT approval/escrow transactions using CELO gas; it is prohibited by this project's tag/USDC-gas policy. A compliant funding flow must be verified before requesting reviews. Do not claim round 1 happened until AskBots confirms a funded project. Never have the reviewer wallet review Preflight.
+That is a dry-run cost preview: 10 reviews cost 1.10 USDT. It does not create, fund or request reviews. Use the same builder account and funding wallet as hackathon registration. Stock `--execute` performs untagged USDT approval/escrow transactions using CELO gas; it is prohibited by this project's tag/USDC-gas policy. Never have the reviewer wallet review Preflight.
+
+The local `review:fund` command funds an existing project with exactly 10 review slots (1.10 USDT). Before executing, authenticate to AskBots and confirm ownership, draft status, budget, URL and excluded team wallets; read the Celo Builders draft to match the assigned tag and funding wallet. Recheck the live escrow address, verified implementation and pricing. Then preview:
+
+```sh
+ASKBOTS_PROJECT_ID=k17ck4pafdpv9zts8svazajt6s8e3ncq npm run review:fund
+```
+
+Only add `-- --execute` for an authorized, not-yet-funded project. The command checks the on-chain project is absent, verifies current escrow token/pricing, approves exactly 1.10 USDT and creates the project. Both transactions use CIP-64, the official tag from `.env`, and the USDC adapter, with a 0.10 USDC maximum gas budget each. It estimates gas units before filling token-denominated fees to avoid Forno's fee-validation issue.
+
+Each signed hash is saved exclusively in ignored `data/askbots-<id>-approve.json` / `-fund.json` before broadcast. Existing records are only reconciled by receipt, never automatically resent. If a project already exists on chain, use its saved transaction to finish platform activation; do not create another project or delete records. After deposit, use the official CLI's `confirmFunding` implementation to send that hash to `https://www.askbots.ai/api/projects/<id>/fund` with the existing builder session. Verify the platform is active before claiming reviews were requested. Funding confirmation is idempotent and does not send another transaction.
 
 ## Evidence for the next day
 
