@@ -11,7 +11,9 @@ async function main(){
   const uri=process.env.AGENT_URI??'';
   if(!/^https:\/\//.test(uri))throw new Error('Set AGENT_URI to the public HTTPS agent registration document.');
   const guarded=prepareMainnetWrite({tag,feeCurrency:process.env.FEE_CURRENCY??USDC_FEE_CURRENCY,data:encodeFunctionData({abi,functionName:'register',args:[uri]})});
-  const request={to:IDENTITY_REGISTRY,...guarded};
+  // Explicit CIP-64 prevents RPC transaction filling from applying native-gas
+  // base-fee validation to fees denominated in USDC.
+  const request={type:'cip64' as const,to:IDENTITY_REGISTRY,...guarded};
   if(!process.argv.includes('--execute')) {console.log(JSON.stringify({mode:'dry-run; no transaction sent',chainId:42220,...request},null,2));return;}
   const pk=process.env.AGENT_PRIVATE_KEY;
   if(!pk || !/^0x[0-9a-fA-F]{64}$/.test(pk))throw new Error('Set AGENT_PRIVATE_KEY locally; never supply it as a CLI flag.');

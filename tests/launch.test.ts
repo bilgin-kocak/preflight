@@ -7,6 +7,7 @@ it('identity command defaults to an unsigned tagged USDC dry-run',()=>{
  const processResult=run({AGENT_URI:'https://example.com/agent.json',ATTRIBUTION_TAG:'celo_0123456789ab'});
  expect(processResult.status).toBe(0);
  const result=JSON.parse(processResult.stdout);
+ expect(result.type).toBe('cip64');
  expect(result.mode).toContain('no transaction sent');expect(result.feeCurrency).toBe(USDC_FEE_CURRENCY);expect(fromDataSuffix(result.data)?.codes).toEqual(['celo_0123456789ab']);
 },15000);
 it('identity execute refuses missing tag and raw USDC feeCurrency before any RPC',()=>{
