@@ -64,6 +64,10 @@ One maintainer capture returned health HTTP 200 with `payments_enabled=false`, p
 
 Here, activity was observed before cutoff, but full history and recent-day coverage are incomplete. Zero observed recent active days does not establish inactivity. An exact transaction count does not make the other fields complete. The free preview provides no first-funder result or independence verdict.
 
+### Verified paid flow — 2026-09-09 UTC
+
+Production x402 was activated after the baseline capture above. One controlled 0.005 USDC purchase returned HTTP 200; its [Celo settlement](https://celo.blockscout.com/tx/0x1d8fde59197391d59615cad0ab9d7e460dd605d836bb72c43e49675d7cfe6e1c), consumed authorization and production SQLite receipt were verified. Reusing that authorization returned HTTP 409. The report stayed `ambiguous` because the funding evidence and dominant-funder context were incomplete. This was a team-controlled test, not independent customer adoption. [Captured report and verification evidence](https://github.com/bilgin-kocak/preflight/blob/main/docs/hackathon/evidence/mainnet-payment-smoke.json). Check live health for current availability.
+
 ## Request fields and context
 
 JSON fields: `address` (required nonzero 20-byte EVM address), `project_wallets` (optional array of up to 100 project-controlled addresses), `dominant_funders` (optional array of up to 100 addresses), `cutoff` (optional past ISO-8601 timestamp; default `2026-08-28T00:00:00Z`). Send `dominant_funders: []` only if you know there is no dominant funder to exclude; omission explicitly means unknown. Unknown fields are rejected. Body limit 16 KiB.

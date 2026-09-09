@@ -1,0 +1,154 @@
+{
+  "checkedAt": "2026-09-09T17:57:43.133Z",
+  "mode": "controlled mainnet smoke test; not independent adoption or ranking revenue",
+  "payer": "0x001bEB8140ce3372646d3197c92F3055694e1E13",
+  "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+  "priceUSDC": "0.005",
+  "network": "eip155:42220",
+  "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+  "httpStatus": 200,
+  "settlementHash": "0x1d8fde59197391d59615cad0ab9d7e460dd605d836bb72c43e49675d7cfe6e1c",
+  "block": "77075851",
+  "transferVerified": true,
+  "authorizationConsumed": true,
+  "report": {
+    "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+    "checked_at": "2026-09-09T17:56:47.287Z",
+    "observed_at": "2026-09-09T17:14:48.095Z",
+    "cutoff": "2026-08-28T00:00:00Z",
+    "is_contract": false,
+    "first_tx_at": "2024-03-08T22:36:17.000Z",
+    "first_tx_block": 24453389,
+    "tx_count": 13,
+    "active_before_cutoff": true,
+    "first_funder": {
+      "address": "0xfcf7129a8a69a2bd7f2f300efc352342d6c1638b",
+      "token": "CELO",
+      "amount": "0.1",
+      "at": "2024-03-08T22:36:17.000Z"
+    },
+    "first_funder_is_project_wallet": null,
+    "distinct_days_active_since_cutoff": 0,
+    "signals": [
+      {
+        "code": "PRE_CUTOFF_ACTIVITY",
+        "severity": "good",
+        "detail": "Observed Celo activity strictly before cutoff."
+      }
+    ],
+    "verdict": "ambiguous",
+    "reasons": [
+      "Dominant-funder context was not supplied.",
+      "First-funder evidence is incomplete or unknown."
+    ],
+    "coverage": {
+      "provider": "blockscout",
+      "history_complete": false,
+      "first_funder_complete": false,
+      "recent_days_complete": false,
+      "tx_count_exact": true
+    },
+    "warnings": [
+      "Oldest history is capped or incompletely indexed; first funding is an observation, not a proven fact.",
+      "Recent distinct days are a lower bound."
+    ],
+    "limitation": "Preflight signals are heuristic observations, not an audit or a hackathon eligibility decision. Declared context is not independently verified; hidden common control and dominance require manual review."
+  },
+  "replayStatus": 409,
+  "replayResponse": {
+    "error": {
+      "code": "PAYMENT_REPLAY",
+      "message": "This authorization has already been attempted.",
+      "hint": "Do not pay again blindly. Check your USDC authorization and settlement transaction; use a fresh authorization for a new request only after reconciliation."
+    }
+  },
+  "sourceCommit": "62925e1",
+  "deploymentId": "8e991c8e-2012-4eb0-96a9-331f033b105a",
+  "publicBaseUrl": "https://preflight-production-9071.up.railway.app",
+  "unpaidStatus": 402,
+  "challenge": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+      "description": "Celo counterparty preflight signals",
+      "mimeType": "application/json"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:42220",
+        "amount": "5000",
+        "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+        "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "USDC",
+          "version": "2"
+        }
+      }
+    ]
+  },
+  "health": {
+    "status": "ok",
+    "version": "0.1.0",
+    "network": "eip155:42220",
+    "providers": {
+      "blockscout": "up"
+    },
+    "current_block": 77076023,
+    "cache_size": 2,
+    "last_settlement_at": "2026-09-09T17:56:55.269Z",
+    "payments_enabled": true,
+    "cutoff": "2026-08-28T00:00:00Z"
+  },
+  "metadata": {
+    "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+    "name": "Preflight",
+    "description": "Celo counterparty preflight signals. Free preview and optional 0.005 USDC checks. Heuristics, not an audit.",
+    "services": [
+      {
+        "name": "web",
+        "endpoint": "https://preflight-production-9071.up.railway.app"
+      },
+      {
+        "name": "skill",
+        "endpoint": "https://preflight-production-9071.up.railway.app/skill.md"
+      },
+      {
+        "name": "HTTP",
+        "endpoint": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty"
+      }
+    ],
+    "x402Support": true,
+    "active": true,
+    "registrations": [
+      {
+        "agentId": "9826",
+        "agentRegistry": "eip155:42220:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+      }
+    ],
+    "supportedTrust": [],
+    "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+    "registration_pending": false
+  },
+  "funding": {
+    "hash": "0xb05004f786701ac11bf1e381296471307b4f5c0825d0fc29d0501a62cf3179fd",
+    "amountUSDC": "0.005",
+    "officialAttributionTag": "celo_80fe04c6accd",
+    "feeCurrency": "0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B",
+    "tagAndFeeCurrencyVerified": true,
+    "gasUSDC": "0.0028377805275"
+  },
+  "ledger": {
+    "verifiedVia": "Read-only Railway SSH query of production /data/preflight.sqlite",
+    "payer": "0x001bEB8140ce3372646d3197c92F3055694e1E13",
+    "amount": "5000",
+    "token": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+    "endpoint": "/v1/counterparty",
+    "state": "settled",
+    "tx": "0x1d8fde59197391d59615cad0ab9d7e460dd605d836bb72c43e49675d7cfe6e1c",
+    "created_at": "2026-09-09T17:56:47.288Z",
+    "settled_at": "2026-09-09T17:56:55.269Z"
+  }
+}
