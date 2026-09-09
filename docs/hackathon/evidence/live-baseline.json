@@ -1,0 +1,80 @@
+{
+  "captured_at": "2026-09-09T17:14:44.950215Z",
+  "base_url": "https://preflight-production-9071.up.railway.app",
+  "scope": "Read-only health, one free preview, and one unsigned paid-route probe. No PAYMENT-SIGNATURE, authorization, payment, or settlement initiated.",
+  "requests": [
+    {
+      "requested_at": "2026-09-09T17:14:44.950500Z",
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "version": "0.1.0",
+        "network": "eip155:42220",
+        "providers": {
+          "blockscout": "up"
+        },
+        "current_block": 77073326,
+        "cache_size": 1,
+        "last_settlement_at": null,
+        "payments_enabled": false,
+        "cutoff": "2026-08-28T00:00:00Z"
+      },
+      "payment_response_present": false
+    },
+    {
+      "requested_at": "2026-09-09T17:14:45.546201Z",
+      "method": "POST",
+      "path": "/v1/preview/counterparty",
+      "status": 200,
+      "body": {
+        "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+        "checked_at": "2026-09-09T17:14:48.095Z",
+        "observed_at": "2026-09-09T17:14:48.095Z",
+        "cutoff": "2026-08-28T00:00:00Z",
+        "is_contract": false,
+        "first_tx_at": "2024-03-08T22:36:17.000Z",
+        "first_tx_block": 24453389,
+        "tx_count": 13,
+        "active_before_cutoff": true,
+        "distinct_days_active_since_cutoff": 0,
+        "signals": [
+          {
+            "code": "PRE_CUTOFF_ACTIVITY",
+            "severity": "good",
+            "detail": "Observed Celo activity strictly before cutoff."
+          }
+        ],
+        "coverage": {
+          "provider": "blockscout",
+          "history_complete": false,
+          "recent_days_complete": false,
+          "tx_count_exact": true
+        },
+        "limitation": "Preflight signals are heuristic observations, not an audit or a hackathon eligibility decision. Declared context is not independently verified; hidden common control and dominance require manual review."
+      },
+      "request_body": {
+        "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+      },
+      "payment_response_present": false
+    },
+    {
+      "requested_at": "2026-09-09T17:14:47.810412Z",
+      "method": "POST",
+      "path": "/v1/counterparty",
+      "status": 503,
+      "body": {
+        "error": {
+          "code": "PAYMENTS_UNAVAILABLE",
+          "message": "Paid checks are not activated yet.",
+          "hint": "Use /v1/preview/counterparty; activation needs a registered payTo and facilitator key."
+        }
+      },
+      "request_body": {
+        "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+      },
+      "payment_response_present": false
+    }
+  ]
+}

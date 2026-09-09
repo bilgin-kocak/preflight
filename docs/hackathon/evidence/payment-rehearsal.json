@@ -1,0 +1,20 @@
+{
+  "mode": "local simulation; no funds moved",
+  "checkedAt": "2026-09-09T17:22:22.035Z",
+  "unpaidStatus": 402,
+  "paidStatus": 200,
+  "signatureVerified": true,
+  "receiptDecoded": true,
+  "invalidSignatureStatus": 402,
+  "restartReplayStatus": 409,
+  "failedSettlementStatus": 402,
+  "failedReportWithheld": true,
+  "failedRetryStatus": 409,
+  "settlementAttempts": 2,
+  "externalRequests": 0,
+  "priceUSDC": "0.005",
+  "limitations": [
+    "Facilitator settlement and wallet history are simulated.",
+    "Does not prove mainnet settlement, production activation or independent adoption."
+  ]
+}

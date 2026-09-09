@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-09-09T17:23:26.048Z",
+  "productionHealth": "ok",
+  "productionPaymentsEnabled": false,
+  "productionSkillMatchesBaseline": true,
+  "productionSkillSHA256": "6ebd379493ffad80f575432807117cb9b64d6cb200919962e8530e9cf7cdda6d",
+  "facilitatorV2CeloExactSupported": true,
+  "sources": [
+    "https://preflight-production-9071.up.railway.app/health",
+    "https://preflight-production-9071.up.railway.app/skill.md",
+    "https://api.x402.celo.org/supported"
+  ],
+  "realPaymentAttempted": false
+}

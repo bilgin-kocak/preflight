@@ -11,13 +11,60 @@ Base URL: `{{BASE_URL}}`. Celo mainnet only (`eip155:42220`). Read `/health` fir
 | POST | `/v1/preview/counterparty` | Free, 20/IP/UTC day | Activity signals without funder or verdict |
 | POST | `/v1/counterparty` | 0.005 USDC (5000 atomic units) | Activity, observed first funder, coverage and verdict |
 
-## Preview
+## Try it in three steps
+
+Run these commands in order. They require only `curl` and a shell; the third request sends no payment signature and cannot authorize a payment. Use the deployed base URL below, or replace it with your own Preflight deployment.
+
+**1. Check health and payment activation.**
 
 ```sh
-curl -sS '{{BASE_URL}}/v1/preview/counterparty' \
+PREFLIGHT_BASE_URL='https://preflight-production-9071.up.railway.app'
+curl -sS --max-time 60 -i "$PREFLIGHT_BASE_URL/health"
+```
+
+Inspect the HTTP status and `payments_enabled`. `false` disables paid requests; the free preview remains available if its dependencies are healthy.
+
+**2. Get one free preview.**
+
+```sh
+curl -sS --max-time 60 -i "$PREFLIGHT_BASE_URL/v1/preview/counterparty" \
   -H 'Content-Type: application/json' \
   -d '{"address":"0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"}'
 ```
+
+**3. Inspect the paid route without paying.**
+
+```sh
+curl -sS --max-time 60 -i "$PREFLIGHT_BASE_URL/v1/counterparty" \
+  -H 'Content-Type: application/json' \
+  -d '{"address":"0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"}'
+```
+
+When payments are disabled, expect HTTP 503 with `error.code=PAYMENTS_UNAVAILABLE`. When activated, the unpaid flow returns HTTP 402 with a `PAYMENT-REQUIRED` header. Neither response proves a paid integration or settlement. The price is 0.005 USDC; the signing flow is documented below.
+
+### Captured preview snapshot — 2026-09-09 UTC
+
+One maintainer capture returned health HTTP 200 with `payments_enabled=false`, preview HTTP 200, and unsigned paid-route HTTP 503 `PAYMENTS_UNAVAILABLE`. The preview request began at `2026-09-09T17:14:45.546201Z`; this excerpt preserves the returned values. It is a dated observation, not a fixture or a guarantee of the next response. Sanitized full responses are in the repository at `docs/hackathon/evidence/live-baseline.json`.
+
+```json
+{
+  "observed_at": "2026-09-09T17:14:48.095Z",
+  "first_tx_at": "2024-03-08T22:36:17.000Z",
+  "tx_count": 13,
+  "active_before_cutoff": true,
+  "distinct_days_active_since_cutoff": 0,
+  "coverage": {
+    "provider": "blockscout",
+    "history_complete": false,
+    "recent_days_complete": false,
+    "tx_count_exact": true
+  }
+}
+```
+
+Here, activity was observed before cutoff, but full history and recent-day coverage are incomplete. Zero observed recent active days does not establish inactivity. An exact transaction count does not make the other fields complete. The free preview provides no first-funder result or independence verdict.
+
+## Request fields and context
 
 JSON fields: `address` (required nonzero 20-byte EVM address), `project_wallets` (optional array of up to 100 project-controlled addresses), `dominant_funders` (optional array of up to 100 addresses), `cutoff` (optional past ISO-8601 timestamp; default `2026-08-28T00:00:00Z`). Send `dominant_funders: []` only if you know there is no dominant funder to exclude; omission explicitly means unknown. Unknown fields are rejected. Body limit 16 KiB.
 
@@ -54,7 +101,20 @@ Never retry a possibly settled authorization blindly. Preflight stores nonce res
 
 ## Evidence and errors
 
-`first_tx_at` is the earliest successful activity observed across normal transactions, token transfers and internal transfers; it may be an incoming transfer rather than a signed transaction. `active_before_cutoff` is true only for observed timestamps strictly before cutoff. Funding ignores zero-value, failed, self and mint-origin transfers; token identity labels come from explorer metadata and are not an allowlist. The history cap is 500 records per stream. If legacy oldest-history access fails, the service falls back to Blockscout v2 observations and marks full-history/first-funder coverage incomplete. Recent days may be a lower bound. Read `coverage` before interpreting a result. Data is cached for one hour; `observed_at` shows its age. The immutable-facts cache accepts only complete history evidence.
+`first_tx_at` means **earliest observed successful activity**, across normal transactions, token transfers and internal transfers. It may be an incoming transfer, so it does not establish that the wallet signed a transaction. It is not a wallet-creation timestamp, and incomplete history may omit an earlier event. `active_before_cutoff` is true only for observed timestamps strictly before cutoff. Funding ignores zero-value, failed, self and mint-origin transfers; token identity labels come from explorer metadata and are not an allowlist. The history cap is 500 records per stream. If legacy oldest-history access fails, the service falls back to Blockscout v2 observations and marks full-history/first-funder coverage incomplete. Recent days may be a lower bound. Data is cached for one hour; `observed_at` dates the evidence, while `checked_at` dates the report. The immutable-facts cache accepts only complete history evidence.
+
+Read these field-level coverage flags alongside the signals. They describe available provider evidence; they are not cryptographic proofs, ownership attestations, or eligibility decisions.
+
+| Field | Interpretation |
+| --- | --- |
+| `coverage.provider` | Source used for the observation. |
+| `coverage.history_complete` | Whether the provider established complete history for the inspected streams. `false` means earlier evidence may be missing. |
+| `coverage.recent_days_complete` | Whether recent activity coverage is complete. If false, the distinct-day count is a lower bound. |
+| `coverage.tx_count_exact` | Whether `tx_count` is exact in the provider's count scope. This does not establish complete transfer or funding history. |
+| `coverage.first_funder_complete` | Paid report only: whether complete funding evidence supports the first-funder result. The preview omits this flag and the funder. |
+| `observed_at` | Evidence timestamp; check its age before relying on cached observations. |
+
+The preview already includes `coverage`, `observed_at`, and a heuristic `limitation` at report level. Detailed `warnings` are available on the paid report; the preview does not expose those warnings.
 
 Errors are `{ "error": { "code": "...", "message": "...", "hint": "..." } }`.
 

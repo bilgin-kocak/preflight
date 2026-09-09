@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "source_sha256": "f45161f3c23cbf775a87a47d637d078962518798b4cd8e14d1ea41c814afcd38",
+  "status_source_sha256": "dc385fad5126dc5b416526c09e4707060938c6c0dd99acdcfb0884b6c05bb478",
+  "project_id": "k17ck4pafdpv9zts8svazajt6s8e3ncq",
+  "status": "completed",
+  "status_checked_at": "2026-09-09T17:11:23.817Z",
+  "response_time_range": {
+    "first": "2026-09-09T17:03:51.706Z",
+    "last": "2026-09-09T17:06:48.118Z"
+  },
+  "counts": {
+    "budget": 10,
+    "paid": 10,
+    "responses_received": 10,
+    "raw_responses": 10,
+    "raw_paid_responses": 10
+  },
+  "response_ids": [
+    "k572d337ngjchwrghwmx2gpph58e3xkk",
+    "k573220d8fhbvarwr0yvp9dg358e3ba8",
+    "k578atgapf3tc7h6fx57bxg65h8e3pxr",
+    "k5795kzy8eqypqjyfw06ewwb0s8e3yh3",
+    "k579d5nr7jbzgva8n27qggzzjd8e201t",
+    "k579g8dv1hvzg8xfbjtcewrmcs8e37de",
+    "k57bj2nyyf700p3avpyh1n27618e24b7",
+    "k57bq0jq2ga5fya0m74gxrcb818e322r",
+    "k57c4w0sktn7xh66fm0xq6dm618e32fk",
+    "k57dn55rs1a79jgj2cy61r6wbn8e2wpa"
+  ],
+  "questions": {
+    "discovery": {
+      "count": 10
+    },
+    "evidence": {
+      "count": 10
+    },
+    "payment": {
+      "count": 10
+    },
+    "usefulness": {
+      "count": 10,
+      "mean": 2.7
+    },
+    "askbots_overall": {
+      "count": 10,
+      "mean": 2.8
+    }
+  },
+  "limitations": [
+    "AskBots ratings are feedback, not an official hackathon score.",
+    "All ten responses lack actual health, preview, or paid-route call evidence.",
+    "Highly similar wording does not establish ten independent integrations.",
+    "Paid means reviewer payout in AskBots, not a purchase from Preflight."
+  ]
+}
