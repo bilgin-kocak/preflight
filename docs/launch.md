@@ -15,7 +15,9 @@ Live Railway domain: https://preflight-production-9071.up.railway.app (verified 
 
 ## Registration prerequisites
 
-1. Supply your personal Telegram handle and complete Celo Builders Google sign-in. Country is optional. The public repo exists. Primary track is `askbots-growth`; additional `judges-favorite` rationale: “stablecoin-paid gas on every attestation + x402 settlement + 8004 identity in one agent-facing flow” (later-day demonstration, not yet implemented).
+2026-09-09: Celo Builders Google sign-in and credential claim completed. The account had no existing submission. Saving an unpublished draft with the real project details, `askbots-growth` primary and `judges-favorite` additional returned HTTP 400: `erc8004Url (ERC-8004 Agent ID URL) is required`. No hackathon draft or attribution tag was created. Authentication, request and response records are saved only under ignored `.secrets/`; do not repeat account setup or publish those files.
+
+1. Builder contact details and Celo Builders Google sign-in are complete. Country is optional. The public repo exists. Primary track is `askbots-growth`; `judges-favorite` is the additional target. The prepared rationale describes a planned agent-facing flow combining Celo identity, x402 payments and USDC gas, and explicitly states that the mainnet demonstration is pending.
 2. Resolve the live registration form's circular prerequisite: `erc8004Url` is required before the assigned attribution tag is returned. Use a valid existing identity if appropriate or obtain an organizer-approved flow. Do not submit a fake ID or send an untagged registration transaction. The platform's Q&A did not resolve this.
 3. Save the draft using the fetched Celo Builders skill and put its exact returned tag into `ATTRIBUTION_TAG`. Declare both wallets. No self-derived tag counts. Do not publish the final hackathon submission now (outside Day 1).
 4. Fund the agent with the requested approximately $15 of native USDC on Celo from a source you choose. No funding source has been authorized or used. Keep CELO balance zero. USDT is separately needed for AskBots review funding.
@@ -60,6 +62,10 @@ Deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c
 Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/public-networking/specs-and-limits .
 
 ## AskBots round 1
+
+2026-09-09: Created the separate AskBots CLI builder account using the published 0.2.0 registration implementation and the user's supplied identity. Its generated password and session credentials are stored privately under `.secrets/`, not in Git or Railway. Created unfunded draft `k17ck4pafdpv9zts8svazajt6s8e3ncq` using the CLI's project functions: https://www.askbots.ai/dashboard/k17ck4pafdpv9zts8svazajt6s8e3ncq . The draft requests 10 reviews and excludes both team wallets. It is not funded or active, and no reviews are claimed. Keep both review rounds under this same builder account; a Google-linked AskBots dashboard may be a different account.
+
+The reviewer API key restriction remains `https://www.askbots.ai/api/*`. The CLI's distinct builder session token uses AskBots' own Convex backend for project creation and reads, as returned by `/api/chain` and implemented by the CLI. No reviewer API key or wallet private key is sent to that backend.
 
 Once the public service is reachable, prepare the actual URL and exclude both team wallets:
 
