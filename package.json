@@ -16,6 +16,7 @@
     "register:identity": "node --env-file-if-exists=.env --env-file-if-exists=.secrets/wallets.env --import tsx scripts/register-identity.ts",
     "review:prepare": "node --env-file-if-exists=.env --env-file-if-exists=.secrets/wallets.env --import tsx scripts/prepare-review.ts",
     "review:fund": "node --env-file-if-exists=.env --env-file-if-exists=.secrets/wallets.env --import tsx scripts/fund-review.ts",
+    "payment:rehearse": "node --import tsx scripts/rehearse-payment.ts",
     "smoke:live": "node --env-file-if-exists=.env --import tsx scripts/smoke-live.ts",
     "wallets:create": "node --import tsx scripts/create-wallets.ts"
   },
