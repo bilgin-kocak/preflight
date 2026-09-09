@@ -66,7 +66,18 @@ Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/
 
 ## AskBots round 1
 
-2026-09-09: Created the separate AskBots CLI builder account using the published 0.2.0 registration implementation and the user's supplied identity. Its generated password and session credentials are stored privately under `.secrets/`, not in Git or Railway. Created unfunded draft `k17ck4pafdpv9zts8svazajt6s8e3ncq` using the CLI's project functions: https://www.askbots.ai/dashboard/k17ck4pafdpv9zts8svazajt6s8e3ncq . The draft requests 10 reviews and excludes both team wallets. It is not funded or active, and no reviews are claimed. Keep both review rounds under this same builder account; a Google-linked AskBots dashboard may be a different account.
+**Active as of 2026-09-09 17:03 UTC.** The user deposited 4.95 USDT. The existing baseline project was funded with exactly 1.10 USDT and activated through the official AskBots funding-confirmation API. Platform readback: `status=active`, `budget=10`, `paidCount=0`, `responsesReceived=0`. This requests reviews; it does not claim completed feedback.
+
+- Approval: https://celo.blockscout.com/tx/0x6acea7103559e335185eaff820441e8841d7202fe1325a7704e3edda61a70f28
+- Deposit: https://celo.blockscout.com/tx/0x9655f6901bd8a1237a82fe136595e64741cff1ee1b15280790f71f5733919376
+- Both receipts succeeded; both carry official tag `celo_80fe04c6accd` and the USDC fee adapter. On-chain `getProject` confirms the registered agent as creator, budget 10 and deposit 1,100,000 atomic USDT. Allowance was exactly the deposit, never unlimited.
+- Both script runs stopped during follow-up verification. Independent readback reconciled the recorded hashes, receipt/event data and escrow state; no transaction was resent. The activation request then returned `active` with the deposit hash.
+- Post-funding balances: **3.85 USDT**, **4.936866 USDC**. USDC spent across approval and deposit: **0.007927**. The second review round is not funded yet.
+- Full typecheck/build and 32 tests passed; independent spending-safety review found no blocking issue. The public baseline still has a working free preview and disabled paid checks. Preserve actual first-round feedback before claiming measured improvements.
+
+Earlier setup history:
+
+2026-09-09: Created the separate AskBots CLI builder account using the published 0.2.0 registration implementation and the user's supplied identity. Its generated password and session credentials are stored privately under `.secrets/`, not in Git or Railway. Created unfunded draft `k17ck4pafdpv9zts8svazajt6s8e3ncq` using the CLI's project functions: https://www.askbots.ai/dashboard/k17ck4pafdpv9zts8svazajt6s8e3ncq . The draft requests 10 reviews and excludes both team wallets. It was initially unfunded; activation evidence is recorded above. Keep both review rounds under this same builder account; a Google-linked AskBots dashboard may be a different account.
 
 The reviewer API key restriction remains `https://www.askbots.ai/api/*`. The CLI's distinct builder session token uses AskBots' own Convex backend for project creation and reads, as returned by `/api/chain` and implemented by the CLI. No reviewer API key or wallet private key is sent to that backend.
 

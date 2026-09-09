@@ -28,4 +28,5 @@ Builder connection, identity, official attribution tag and facilitator credentia
 - [x] Public deployment: free preview live; user-approved RAILWAY_RUN_UID=0 resolved volume permissions.
 - [x] Hackathon draft registered for Tracks 3/4; assigned tag celo_80fe04c6accd saved.
 - [x] User funded 4.95 USDC; facilitator key configured; ERC-8004 identity 9826 registered with USDC gas.
-- [ ] Paid API activation and real AskBots review funding/reviews remain pending.
+- [x] First AskBots round funded for 10 reviews and activated; official-tag/USDC-gas transactions verified.
+- [ ] Completed baseline feedback, paid API activation, review-driven improvements and second review round remain pending.
