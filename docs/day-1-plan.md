@@ -18,13 +18,14 @@ Node 22, TypeScript, Hono, viem/Celo, better-sqlite3 and Vitest. Paid request co
 
 ## External prerequisites
 
-Registration needs real Telegram handle, agent wallet and existing ERC-8004 ID or organizer resolution of identity/tag circular dependency. Payment acceptance needs the registered payTo and X402_API_KEY. AskBots funding needs a compliant tag/USDC gas path and USDT. Public preview can operate without payment credentials and must advertise payments unavailable in that case. Separate agent and reviewer wallets were generated as explicitly requested by Day 1; keys are local and excluded from commits. No funds moved.
+Builder connection, identity, official attribution tag and facilitator credentials are configured. AskBots funding still needs a compliant tag/USDC gas path and USDT. Payments remain disabled until activation. Separate agent and reviewer wallet keys remain local and excluded from commits. The user-authorized bootstrap identity transaction used a nonempty Preflight tag and USDC gas; future transactions use the assigned tag. See launch.md for confirmed evidence.
 
 ## Actual launch status
 
 - [x] Public repository created and small commits pushed.
 - [x] AskBots round-1 dry-run validated: 10 reviews, 1.10 USDT, executed=false.
 - [x] Railway project/service/domain/volume created; Docker image built.
-- [ ] Public deployment: startup fails SQLITE_CANTOPEN on root-owned volume; root override rejected by automatic approval review, explicit user approval pending.
-- [ ] Hackathon registration/tag: real contact details and valid identity/bootstrap resolution required.
-- [ ] Funding, facilitator key, mainnet identity transaction and real AskBots reviews: not performed.
+- [x] Public deployment: free preview live; user-approved RAILWAY_RUN_UID=0 resolved volume permissions.
+- [x] Hackathon draft registered for Tracks 3/4; assigned tag celo_80fe04c6accd saved.
+- [x] User funded 4.95 USDC; facilitator key configured; ERC-8004 identity 9826 registered with USDC gas.
+- [ ] Paid API activation and real AskBots review funding/reviews remain pending.

@@ -44,7 +44,7 @@ Send `address`, optional `project_wallets`, `dominant_funders`, and `cutoff`. A 
 
 The official `@x402/hono` middleware verifies payment, computes the report, then settles before releasing it. Failed checks do not settle. SQLite reserves the payer/asset/network/nonce before settlement; duplicates cannot settle or serve twice. Pending reservations remain pending after a timeout or restart and require manual reconciliation. Day 1 does not recover a paid response lost after settlement.
 
-All self-sent writes go through a nonempty assigned attribution suffix and the verified **USDC fee adapter**. `feeCurrency` must be `0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B`, not the USDC token contract. Identity registration defaults to a dry-run, caps estimated gas at 0.10 USDC, stores its transaction hash before broadcast, checks successful receipt, and calls `verifyTx`. It refuses to proceed without the assigned tag. No mainnet transaction has been sent for this project yet.
+Future self-sent writes use assigned attribution tag `celo_80fe04c6accd` and the verified **USDC fee adapter**. `feeCurrency` must be `0x2F25deB3848C207fc8E0c34035B3Ba7fC157602B`, not the USDC token contract. Identity registration uses explicit CIP-64, defaults to a dry-run, caps estimated gas at 0.10 USDC, stores its transaction hash before broadcast, checks successful receipt, and calls `verifyTx`. The first identity transaction used a user-authorized bootstrap tag because the hackathon requires an identity before assigning its tag; that transaction cannot receive hackathon tag credit. See [registration evidence](docs/launch.md).
 
 The live facilitator's published base fee is $0.004 plus 0.3%, leaving little margin at $0.005. Pricing follows the spec; revenue and prizes depend on real independent usage and judging.
 
@@ -61,6 +61,6 @@ Tests cover payment signatures, failed settlement, concurrent replay, provider o
 
 Dockerfile and `railway.json` are included. Use one replica and a persistent volume at `/data`; SQLite contains payment replay records and quotas and must survive redeploys. Railway's edge supplies `X-Real-IP`; only set `TRUST_RAILWAY_PROXY=true` there. The Docker image defaults to the non-root `node` user; the dedicated Railway service uses the explicitly approved `RAILWAY_RUN_UID=0` override for volume access. See [launch steps](docs/launch.md) for deployment verification and pending external setup.
 
-The [live free preview service](https://preflight-production-9071.up.railway.app) is available. Payments and identity registration remain pending.
+The [live free preview service](https://preflight-production-9071.up.railway.app) is available. [ERC-8004 agent #9826](https://8004scan.io/agents/celo/9826) and the hackathon draft are registered. Payments and AskBots review funding remain pending.
 
 Day 2+ features are intentionally absent: signed reports, batch, contract checks, tags endpoint, attestations, MCP, CLI and OpenAPI. The service is an API, with a JSON discovery response at `/`.

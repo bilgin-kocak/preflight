@@ -10,30 +10,33 @@ Live Railway domain: https://preflight-production-9071.up.railway.app (verified 
 - Separate agent and reviewer wallets, generated locally. `.secrets/wallets.env` has mode 0600 in a mode-0700 directory. It is ignored by Git, Docker and Railway upload. Do not paste its contents anywhere.
 - Agent public address: `0x7a1f16230c5F3fD3b50C435fa93035eE789eE789`.
 - Reviewer public address: `0x001bEB8140ce3372646d3197c92F3055694e1E13`.
-- No wallet funding, registration, mainnet writes, payments, reviews or earnings claimed.
+- User funded 4.95 USDC; identity registration succeeded. No paid API settlements, paid reviews or earnings claimed.
 - AskBots CLI dry-run succeeded: `ok=true`, `dryRun=true`, `executed=false`, 10 reviews costing 1.10 USDT.
 
-## Registration prerequisites
+## Registration completed on 2026-09-09
 
-2026-09-09: Celo Builders Google sign-in and credential claim completed. The account had no existing submission. Saving an unpublished draft with the real project details, `askbots-growth` primary and `judges-favorite` additional returned HTTP 400: `erc8004Url (ERC-8004 Agent ID URL) is required`. No hackathon draft or attribution tag was created. Authentication, request and response records are saved only under ignored `.secrets/`; do not repeat account setup or publish those files.
+- ERC-8004 agent: [9826](https://8004scan.io/agents/celo/9826).
+- Successful [identity transaction](https://celo.blockscout.com/tx/0x4cac2be5ced21315025027f6d09762a7f4fa63c595eaaf8449046b6a7a746c8d), block 77070483. Registry ownership and token URI were independently read back.
+- The first transaction carried user-authorized bootstrap tag `celo_5ffb0641430f`, verified with `verifyTx`, and used the USDC fee adapter. It cost **0.005207 USDC**, leaving **4.944793 USDC** and **0 CELO** immediately afterward.
+- Hackathon draft `426158aa-1643-48f1-b21a-855b9478363c` saved successfully and read back with `askbots-growth` primary and `judges-favorite` additional. Both team wallets and the AskBots draft URL are recorded.
+- Official `ATTRIBUTION_TAG=celo_80fe04c6accd`, returned by Celo Builders. This must be used for every future self-sent write. The bootstrap transaction does not count under the assigned hackathon tag and cannot be retagged.
+- Local configuration contains the assigned tag and `ERC8004_AGENT_ID=9826`; the same public values are configured on Railway. Keys stay local/private. Final hackathon publication and the required real X post are pending.
+- Railway configuration deployment `8e9dcc00-ec86-424a-bbd3-f772d23ef10d` succeeded. Live `/health` returned 200; `/.well-known/agent.json` returned identity 9826 with `registration_pending=false`. Payments remain disabled.
+- The explicit CIP-64 preparation fix passed all 29 tests, typecheck and production build before signing; the live prepared maximum fee was about 0.00631 USDC, below the unchanged 0.10 USDC cap.
 
-1. Builder contact details and Celo Builders Google sign-in are complete. Country is optional. The public repo exists. Primary track is `askbots-growth`; `judges-favorite` is the additional target. The prepared rationale describes a planned agent-facing flow combining Celo identity, x402 payments and USDC gas, and explicitly states that the mainnet demonstration is pending.
-2. Resolve the live registration form's circular prerequisite: `erc8004Url` is required before the assigned attribution tag is returned. Use a valid existing identity if appropriate or obtain an organizer-approved flow. Do not submit a fake ID or send an untagged registration transaction. The platform's Q&A did not resolve this.
-3. Save the draft using the fetched Celo Builders skill and put its exact returned tag into `ATTRIBUTION_TAG`. Declare both wallets. No self-derived tag counts. Do not publish the final hackathon submission now (outside Day 1).
-4. Fund the agent with the requested approximately $15 of native USDC on Celo from a source you choose. No funding source has been authorized or used. Keep CELO balance zero. USDT is separately needed for AskBots review funding.
+The initial draft save failed because the form requires an ERC-8004 URL before issuing a tag. The user authorized the custom-tag identity transaction to resolve that prerequisite. No fake identity or untagged transaction was used. Private connection and draft records remain under ignored `.secrets/`; do not repeat registration.
 
 ## Identity registration
 
-The service hosts `/.well-known/agent.json`; until registration it honestly lists no registered identity. Set `AGENT_URI` to that public URL. Never add wallet keys to Railway variables: the identity script runs locally.
+The service hosts `/.well-known/agent.json`, configured with confirmed identity 9826. `AGENT_URI` points to that public URL. Registration is complete: do not execute it again. Never add wallet keys to Railway variables: the identity script runs locally.
 
 ```sh
 # Reads local .env and .secrets/wallets.env; defaults to unsigned dry-run
 npm run register:identity
-# Only after a real assigned tag and funded wallet exist:
-npm run register:identity -- --execute
+# Registration already completed; do not repeat --execute.
 ```
 
-The sole broadcast path verifies chain 42220, zero CELO, a nonempty issued tag, adapter feeCurrency, simulation, and estimated gas <=0.10 USDC. It saves a prepared hash before broadcast; a repeated invocation refuses automatic resending. After confirmation it checks receipt success, feeCurrency and `verifyTx`, extracts the `Registered` event and prints the 8004scan link. Save `ERC8004_AGENT_ID` in the server environment only after success. A timed-out/failed registration must be reconciled on the explorer; do not delete its state record merely to retry.
+The sole broadcast path explicitly prepares CIP-64 and verifies chain 42220, zero CELO, a nonempty attribution suffix, adapter feeCurrency, simulation, and estimated gas <=0.10 USDC. The local configured tag is now the platform-assigned tag. It saves a prepared hash before broadcast; a repeated invocation refuses automatic resending. After confirmation it checks receipt success, feeCurrency and `verifyTx`, extracts the `Registered` event and prints the 8004scan link. Save `ERC8004_AGENT_ID` in the server environment only after success. A timed-out/failed registration must be reconciled on the explorer; do not delete its state record merely to retry.
 
 ## Activate payments
 
@@ -41,7 +44,7 @@ The facilitator API key was created on 2026-09-09 using the agent wallet's off-c
 
 Paid activation still requires the registered `AGENT_ADDRESS`, assigned `ATTRIBUTION_TAG`, HTTPS `PUBLIC_BASE_URL` and `PAYMENTS_ENABLED=true`. Payments remain disabled. Keep the durable SQLite volume across deployments. `/health` exposes activation status, never secrets.
 
-Configuration redeployment `ed4000f6-d881-4f09-96cf-c3c3ac38b325` succeeded on 2026-09-09. Public `/health` returned `status=ok` and `payments_enabled=false`. The facilitator account confirmed that the key exists. Read-only wallet checks still show 0 CELO, 0 USDC and 0 USDT.
+Configuration redeployment `ed4000f6-d881-4f09-96cf-c3c3ac38b325` succeeded on 2026-09-09. Public `/health` returned `status=ok` and `payments_enabled=false`. The facilitator account confirmed that the key exists. That pre-funding check showed zero balances; current registration balances are recorded above.
 
 `ETHERSCAN_API_KEY` is optional fallback access, not a requirement for the primary provider. Obtain a V2 key with Celo access through Etherscan; do not assume a legacy Celoscan key works.
 
@@ -57,7 +60,7 @@ Deploy only one replica. Set `DATABASE_PATH=/data/preflight.sqlite`, `PORT=3000`
 
 Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. The first deployment failed with `SQLITE_CANTOPEN`. After explicit user approval on 2026-09-08, `RAILWAY_RUN_UID=0` was applied to this dedicated production service. The Dockerfile still defaults to the non-root `node` user; Railway overrides the runtime UID to root so SQLite can use the persistent `/data` volume. Keep that volume across deployments; do not switch payment state to ephemeral storage.
 
-Deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c`. Public `/health`, `/skill.md`, and `/.well-known/agent.json` returned HTTP 200. A real `/v1/preview/counterparty` request returned HTTP 200 in about 2.1 seconds; this single measurement does not establish p95 latency. `/v1/counterparty` correctly returned HTTP 503 with `PAYMENTS_UNAVAILABLE`. Identity registration remains pending, and no payment or mainnet transaction was sent.
+Deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c`. Public `/health`, `/skill.md`, and `/.well-known/agent.json` returned HTTP 200. A real `/v1/preview/counterparty` request returned HTTP 200 in about 2.1 seconds; this single measurement does not establish p95 latency. `/v1/counterparty` correctly returned HTTP 503 with `PAYMENTS_UNAVAILABLE`. At that initial deployment, identity registration was pending. It subsequently completed as recorded above; no paid API settlement has occurred.
 
 Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/public-networking/specs-and-limits .
 
