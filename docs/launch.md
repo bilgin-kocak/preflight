@@ -35,7 +35,11 @@ The sole broadcast path verifies chain 42220, zero CELO, a nonempty issued tag, 
 
 ## Activate payments
 
-Connect the registered agent wallet at https://x402.celo.org and create a facilitator API key with an off-chain signature. Store the one-time key securely as `X402_API_KEY` in Railway. Paid activation additionally requires the registered `AGENT_ADDRESS`, assigned `ATTRIBUTION_TAG`, HTTPS `PUBLIC_BASE_URL` and `PAYMENTS_ENABLED=true`. Keep the durable SQLite volume across deployments. `/health` exposes activation status, never secrets.
+The facilitator API key was created on 2026-09-09 using the agent wallet's off-chain ownership signature, with no transaction or payment. The response granted 20 mainnet and 1000 testnet settlement credits. The key is saved in ignored `.secrets/x402-key.json` and `.env` files with mode 0600, and configured as `X402_API_KEY` in Railway. Do not print or commit those files. Key creation does not require an existing ERC-8004 identity.
+
+Paid activation still requires the registered `AGENT_ADDRESS`, assigned `ATTRIBUTION_TAG`, HTTPS `PUBLIC_BASE_URL` and `PAYMENTS_ENABLED=true`. Payments remain disabled. Keep the durable SQLite volume across deployments. `/health` exposes activation status, never secrets.
+
+Configuration redeployment `ed4000f6-d881-4f09-96cf-c3c3ac38b325` succeeded on 2026-09-09. Public `/health` returned `status=ok` and `payments_enabled=false`. The facilitator account confirmed that the key exists. Read-only wallet checks still show 0 CELO, 0 USDC and 0 USDT.
 
 `ETHERSCAN_API_KEY` is optional fallback access, not a requirement for the primary provider. Obtain a V2 key with Celo access through Etherscan; do not assume a legacy Celoscan key works.
 
