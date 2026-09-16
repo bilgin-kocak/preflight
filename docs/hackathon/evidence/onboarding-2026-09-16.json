@@ -1,0 +1,532 @@
+{
+  "checkedAt": "2026-09-16T14:06:42.347Z",
+  "sourceCommitBefore": "7c72510",
+  "sourceCommitAfter": "7a3d9ec",
+  "deploymentId": "233da935-f1df-40d7-8a6c-f550521932b9",
+  "mode": "Maintainer verification; unsigned HTTP only; not AskBots reviews or an official score",
+  "explanation": "Both versions returned HTTP 400 for invalid input. The new checks require field-specific error issues, newly added for actionable repair. This comparison measures that API contract change, not an independent reviewer score.",
+  "before": {
+    "schemaVersion": 1,
+    "mode": "unsigned API evaluation; no payment attempted",
+    "startedAt": "2026-09-16T13:59:46.763Z",
+    "completedAt": "2026-09-16T13:59:50.694Z",
+    "baseUrl": "https://preflight-production-9071.up.railway.app",
+    "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+    "allChecksPassed": false,
+    "checks": [
+      {
+        "id": "discovery",
+        "url": "https://preflight-production-9071.up.railway.app/",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 638,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "name": "Preflight",
+          "version": "0.1.0",
+          "description": "Celo counterparty preflight signals",
+          "skill": "/skill.md",
+          "preview": "/v1/preview/counterparty",
+          "paid": "/v1/counterparty",
+          "payments_enabled": true
+        }
+      },
+      {
+        "id": "health",
+        "url": "https://preflight-production-9071.up.railway.app/health",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 571,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "status": "ok",
+          "version": "0.1.0",
+          "network": "eip155:42220",
+          "providers": {
+            "blockscout": "up"
+          },
+          "current_block": 77666429,
+          "cache_size": 1,
+          "last_settlement_at": "2026-09-09T17:56:55.269Z",
+          "payments_enabled": true,
+          "cutoff": "2026-08-28T00:00:00Z"
+        }
+      },
+      {
+        "id": "instructions",
+        "url": "https://preflight-production-9071.up.railway.app/skill.md",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 237,
+        "headers": {
+          "content-type": "text/plain; charset=UTF-8"
+        },
+        "body": {
+          "omitted": "Instruction text summarized here; full response retained in local capture",
+          "characters": 10314,
+          "sha256": "5cfda760bd94597af35dbde21ad48950d358b7fc7dcc63cf5ff0375913a7f7fd"
+        }
+      },
+      {
+        "id": "identity",
+        "url": "https://preflight-production-9071.up.railway.app/.well-known/agent.json",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 134,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+          "name": "Preflight",
+          "description": "Celo counterparty preflight signals. Free preview and optional 0.005 USDC checks. Heuristics, not an audit.",
+          "services": [
+            {
+              "name": "web",
+              "endpoint": "https://preflight-production-9071.up.railway.app"
+            },
+            {
+              "name": "skill",
+              "endpoint": "https://preflight-production-9071.up.railway.app/skill.md"
+            },
+            {
+              "name": "HTTP",
+              "endpoint": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty"
+            }
+          ],
+          "x402Support": true,
+          "active": true,
+          "registrations": [
+            {
+              "agentId": "9826",
+              "agentRegistry": "eip155:42220:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+            }
+          ],
+          "supportedTrust": [],
+          "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+          "registration_pending": false
+        }
+      },
+      {
+        "id": "preview",
+        "url": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+        },
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 1952,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+          "checked_at": "2026-09-16T13:59:50.635Z",
+          "observed_at": "2026-09-16T13:59:50.634Z",
+          "cutoff": "2026-08-28T00:00:00Z",
+          "is_contract": false,
+          "first_tx_at": "2024-03-08T22:36:17.000Z",
+          "first_tx_block": 24453389,
+          "tx_count": 13,
+          "active_before_cutoff": true,
+          "distinct_days_active_since_cutoff": 0,
+          "signals": [
+            {
+              "code": "PRE_CUTOFF_ACTIVITY",
+              "severity": "good",
+              "detail": "Observed Celo activity strictly before cutoff."
+            }
+          ],
+          "coverage": {
+            "provider": "blockscout",
+            "history_complete": false,
+            "recent_days_complete": false,
+            "tx_count_exact": true
+          },
+          "limitation": "Preflight signals are heuristic observations, not an audit or a hackathon eligibility decision. Declared context is not independently verified; hidden common control and dominance require manual review."
+        }
+      },
+      {
+        "id": "invalid-address",
+        "url": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "invalid"
+        },
+        "expectedStatus": 400,
+        "status": 400,
+        "passed": false,
+        "durationMs": 135,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid address, cutoff or context fields.",
+            "hint": "Send a nonzero 0x address; optional project_wallets/dominant_funders arrays (max 100 each) and a past ISO-8601 cutoff."
+          }
+        }
+      },
+      {
+        "id": "invalid-context",
+        "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+          "project_wallets": [
+            "invalid"
+          ]
+        },
+        "expectedStatus": 400,
+        "status": 400,
+        "passed": false,
+        "durationMs": 126,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid address, cutoff or context fields.",
+            "hint": "Send a nonzero 0x address; optional project_wallets/dominant_funders arrays (max 100 each) and a past ISO-8601 cutoff."
+          }
+        }
+      },
+      {
+        "id": "payment-offer",
+        "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+        },
+        "expectedStatus": 402,
+        "status": 402,
+        "passed": true,
+        "durationMs": 123,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "PAYMENT_REQUIRED",
+            "message": "A valid settled USDC payment is required.",
+            "hint": "Read PAYMENT-REQUIRED and resend with PAYMENT-SIGNATURE. After a settlement attempt, check its receipt before creating a new authorization."
+          }
+        },
+        "paymentRequired": {
+          "x402Version": 2,
+          "error": "Payment required",
+          "resource": {
+            "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+            "description": "Celo counterparty preflight signals",
+            "mimeType": "application/json"
+          },
+          "accepts": [
+            {
+              "scheme": "exact",
+              "network": "eip155:42220",
+              "amount": "5000",
+              "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+              "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+              "maxTimeoutSeconds": 300,
+              "extra": {
+                "name": "USDC",
+                "version": "2"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "limitations": [
+      "Checks verify the HTTP contract, not wallet independence, eligibility or product usefulness.",
+      "Incomplete coverage is valid evidence, not a failed check. Read the report and form your own assessment.",
+      "HTTP 402 verifies a payment offer only; this run does not purchase or verify a paid report.",
+      "This output contains no rating or generated review. Include observed evidence and your own candid findings."
+    ]
+  },
+  "after": {
+    "schemaVersion": 1,
+    "mode": "unsigned API evaluation; no payment attempted",
+    "startedAt": "2026-09-16T14:06:40.224Z",
+    "completedAt": "2026-09-16T14:06:42.347Z",
+    "baseUrl": "https://preflight-production-9071.up.railway.app",
+    "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+    "allChecksPassed": true,
+    "checks": [
+      {
+        "id": "discovery",
+        "url": "https://preflight-production-9071.up.railway.app/",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 534,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "name": "Preflight",
+          "version": "0.1.0",
+          "description": "Celo counterparty preflight signals",
+          "skill": "/skill.md",
+          "preview": "/v1/preview/counterparty",
+          "paid": "/v1/counterparty",
+          "payments_enabled": true
+        }
+      },
+      {
+        "id": "health",
+        "url": "https://preflight-production-9071.up.railway.app/health",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 557,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "status": "ok",
+          "version": "0.1.0",
+          "network": "eip155:42220",
+          "providers": {
+            "blockscout": "up"
+          },
+          "current_block": 77666841,
+          "cache_size": 2,
+          "last_settlement_at": "2026-09-09T17:56:55.269Z",
+          "payments_enabled": true,
+          "cutoff": "2026-08-28T00:00:00Z"
+        }
+      },
+      {
+        "id": "instructions",
+        "url": "https://preflight-production-9071.up.railway.app/skill.md",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 163,
+        "headers": {
+          "content-type": "text/plain; charset=UTF-8"
+        },
+        "body": {
+          "omitted": "Instruction text summarized here; full response retained in local capture",
+          "characters": 13012,
+          "sha256": "dda492e452fee1492042a877e883c5ab2c3722764e852d5cc2c489a4120079ad"
+        }
+      },
+      {
+        "id": "identity",
+        "url": "https://preflight-production-9071.up.railway.app/.well-known/agent.json",
+        "method": "GET",
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 162,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
+          "name": "Preflight",
+          "description": "Celo counterparty preflight signals. Free preview and optional 0.005 USDC checks. Heuristics, not an audit.",
+          "services": [
+            {
+              "name": "web",
+              "endpoint": "https://preflight-production-9071.up.railway.app"
+            },
+            {
+              "name": "skill",
+              "endpoint": "https://preflight-production-9071.up.railway.app/skill.md"
+            },
+            {
+              "name": "HTTP",
+              "endpoint": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty"
+            }
+          ],
+          "x402Support": true,
+          "active": true,
+          "registrations": [
+            {
+              "agentId": "9826",
+              "agentRegistry": "eip155:42220:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+            }
+          ],
+          "supportedTrust": [],
+          "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+          "registration_pending": false
+        }
+      },
+      {
+        "id": "preview",
+        "url": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+        },
+        "expectedStatus": 200,
+        "status": 200,
+        "passed": true,
+        "durationMs": 149,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+          "checked_at": "2026-09-16T14:06:42.134Z",
+          "observed_at": "2026-09-16T13:59:50.634Z",
+          "cutoff": "2026-08-28T00:00:00Z",
+          "is_contract": false,
+          "first_tx_at": "2024-03-08T22:36:17.000Z",
+          "first_tx_block": 24453389,
+          "tx_count": 13,
+          "active_before_cutoff": true,
+          "distinct_days_active_since_cutoff": 0,
+          "signals": [
+            {
+              "code": "PRE_CUTOFF_ACTIVITY",
+              "severity": "good",
+              "detail": "Observed Celo activity strictly before cutoff."
+            }
+          ],
+          "coverage": {
+            "provider": "blockscout",
+            "history_complete": false,
+            "recent_days_complete": false,
+            "tx_count_exact": true
+          },
+          "limitation": "Preflight signals are heuristic observations, not an audit or a hackathon eligibility decision. Declared context is not independently verified; hidden common control and dominance require manual review."
+        }
+      },
+      {
+        "id": "invalid-address",
+        "url": "https://preflight-production-9071.up.railway.app/v1/preview/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "invalid"
+        },
+        "expectedStatus": 400,
+        "status": 400,
+        "passed": true,
+        "durationMs": 135,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid address, cutoff or context fields.",
+            "hint": "Correct the fields in error.issues, then retry. No payment is needed for validation.",
+            "issues": [
+              {
+                "path": "address",
+                "code": "custom",
+                "message": "Expected a nonzero Celo address"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "invalid-context",
+        "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a",
+          "project_wallets": [
+            "invalid"
+          ]
+        },
+        "expectedStatus": 400,
+        "status": 400,
+        "passed": true,
+        "durationMs": 129,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "INVALID_REQUEST",
+            "message": "Invalid address, cutoff or context fields.",
+            "hint": "Correct the fields in error.issues, then retry. No payment is needed for validation.",
+            "issues": [
+              {
+                "path": "project_wallets.0",
+                "code": "custom",
+                "message": "Expected a nonzero Celo address"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "payment-offer",
+        "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+        "method": "POST",
+        "requestBody": {
+          "address": "0x23Ca5C88009B94aA554dC37beE88517C92f7c07a"
+        },
+        "expectedStatus": 402,
+        "status": 402,
+        "passed": true,
+        "durationMs": 281,
+        "headers": {
+          "content-type": "application/json"
+        },
+        "body": {
+          "error": {
+            "code": "PAYMENT_REQUIRED",
+            "message": "A valid settled USDC payment is required.",
+            "hint": "Read PAYMENT-REQUIRED and resend with PAYMENT-SIGNATURE. After a settlement attempt, check its receipt before creating a new authorization."
+          }
+        },
+        "paymentRequired": {
+          "x402Version": 2,
+          "error": "Payment required",
+          "resource": {
+            "url": "https://preflight-production-9071.up.railway.app/v1/counterparty",
+            "description": "Celo counterparty preflight signals",
+            "mimeType": "application/json"
+          },
+          "accepts": [
+            {
+              "scheme": "exact",
+              "network": "eip155:42220",
+              "amount": "5000",
+              "asset": "0xcebA9300f2b948710d2653dD7B07f33A8B32118C",
+              "payTo": "0x7a1f16230c5F3fD3b50C435fa93035eE789eE789",
+              "maxTimeoutSeconds": 300,
+              "extra": {
+                "name": "USDC",
+                "version": "2"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "limitations": [
+      "Checks verify the HTTP contract, not wallet independence, eligibility or product usefulness.",
+      "Incomplete coverage is valid evidence, not a failed check. Read the report and form your own assessment.",
+      "HTTP 402 verifies a payment offer only; this run does not purchase or verify a paid report.",
+      "This output contains no rating or generated review. Include observed evidence and your own candid findings."
+    ]
+  }
+}

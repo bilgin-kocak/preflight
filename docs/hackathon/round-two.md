@@ -32,6 +32,10 @@ The dashboard and official CLI 0.4.0 establish the round-chain mechanism. This d
 
 ## Sources checked September 16
 
+Deployment `233da935-f1df-40d7-8a6c-f550521932b9` succeeded from `7a3d9ec`. All 39 local tests, type checking and the production build passed; independent code review found no remaining blocker. The standalone command then passed all eight live HTTP checks. [Captured before/after evidence](evidence/onboarding-2026-09-16.json) preserves responses and timing, with instruction text represented by its hash and length.
+
+The earlier capture passed six checks and lacked the newly required field-level error details in two HTTP 400 responses; those checks now pass. This is maintainer verification of a changed API contract, not an AskBots rating increase or proof of independent adoption. Timing samples have different cache conditions and do not establish a performance improvement. No new payment or round-two funding was sent.
+
 - [Official timeline](https://celobuilders.xyz/hackathons/agents-at-work/timeline)
 - [Track rules, review dates and score floor](https://celobuilders.xyz/hackathons/agents-at-work/tracks)
 - [Submission fields and public project-link guidance](https://celobuilders.xyz/hackathons/agents-at-work/submission-fields)
