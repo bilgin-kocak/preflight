@@ -43,6 +43,17 @@ describe('Day 1 HTTP API',()=>{
  it('validates before payment and emits actionable errors',async()=>{
   const {request,facilitator}=setup(); const r=await request('/v1/counterparty',{address:'oops'});expect(r.status).toBe(400);expect((await r.json()).error.hint).toBeTruthy();expect(facilitator.verify).not.toHaveBeenCalled();
  });
+ it('identifies invalid nested request fields so callers can repair them before payment',async()=>{
+  const {request,store}=setup();
+  const r=await request('/v1/counterparty',{address:account.address,project_wallets:['not-an-address'],cutoff:'tomorrow'});
+  expect(r.status).toBe(400);
+  const body=await r.json();
+  expect(body.error.issues).toEqual(expect.arrayContaining([
+   expect.objectContaining({path:'project_wallets.0',message:expect.any(String)}),
+   expect.objectContaining({path:'cutoff',message:expect.any(String)}),
+  ]));
+  expect(store.stats().lastSettlement).toBeNull();
+ });
  it('serves discovery and free preview without paid conclusions',async()=>{
   const {app,request}=setup();expect((await app.request('/health')).status).toBe(200);expect(await(await app.request('/skill.md')).text()).toContain('Preflight');
   const r=await request('/v1/preview/counterparty');expect(r.status).toBe(200);expect(await r.text()).not.toMatch(/first_funder|verdict|reasons/);

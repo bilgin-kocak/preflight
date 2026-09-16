@@ -43,7 +43,10 @@ export function createApp(d:Dependencies) {
     const [providers,block]=await Promise.allSettled([d.provider.health(),d.currentBlock()]);
     const statuses=providers.status==='fulfilled'?providers.value:{explorer:'down'};
     const ok=Object.values(statuses).includes('up')&&block.status==='fulfilled';
-    const body={status:ok?'ok':'degraded',version:'0.1.0',network:NETWORK,providers:statuses,current_block:block.status==='fulfilled'?Number(block.value):null,cache_size:d.store.stats().cacheSize,last_settlement_at:d.store.stats().lastSettlement,payments_enabled:paid,cutoff:CUTOFF};
+    const body={status:ok?'ok':'degraded',version:'0.1.0',network:NETWORK,providers:statuses,current_block:block.status==='fulfilled'?Number(block.value):null,cache_size:d.store.stats().cacheSize,last_settlement_at:d.store.stats().lastSettlement,payments_enabled:paid,cutoff:CUTOFF,
+      // Preserve diagnostics through the shared error-normalization middleware.
+      ...(!ok?error('DEPENDENCY_UNAVAILABLE','A health dependency is unavailable.','Inspect providers and current_block; retry later. Do not authorize a payment while health is degraded.'):{}),
+    };
     d.store.put('health',body,15000);return c.json(body,ok?200:503);
   });
   for(const route of ['/skill.md','/v1/skill.md'])app.get(route,c=>c.text(d.skill.replaceAll('{{BASE_URL}}',d.config.PUBLIC_BASE_URL.replace(/\/$/,''))));
@@ -56,7 +59,10 @@ export function createApp(d:Dependencies) {
   }));
   const validate=async(c:Context<Env>,next:()=>Promise<void>)=>{
     let json:unknown;try{json=await c.req.json();}catch{return c.json(error('INVALID_JSON','Expected a JSON request body.','Use Content-Type: application/json and a JSON object with address.'),400);}
-    const parsed=requestSchema.safeParse(json);if(!parsed.success)return c.json(error('INVALID_REQUEST','Invalid address, cutoff or context fields.','Send a nonzero 0x address; optional project_wallets/dominant_funders arrays (max 100 each) and a past ISO-8601 cutoff.'),400);
+    const parsed=requestSchema.safeParse(json);if(!parsed.success)return c.json({error:{
+      ...error('INVALID_REQUEST','Invalid address, cutoff or context fields.','Correct the fields in error.issues, then retry. No payment is needed for validation.').error,
+      issues:parsed.error.issues.map(issue=>({path:issue.path.map(String).join('.')||'$',code:issue.code,message:issue.message})),
+    }},400);
     c.set('input',parsed.data);await next();
   };
   app.post('/v1/preview/counterparty',validate,async c=>{
