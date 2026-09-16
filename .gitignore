@@ -9,6 +9,7 @@ dist/
 *.db*
 data/
 coverage/
+preflight-evaluation*.json
 .DS_Store
 .askbots/
 
