@@ -1,7 +1,9 @@
 # Day 1 launch runbook
 
 Public source: https://github.com/bilgin-kocak/preflight .
-Live Railway domain: https://preflight-production-9071.up.railway.app (verified 2026-09-08; free preview active, payments disabled).
+Live Railway domain: https://preflight-production-9071.up.railway.app (health rechecked 2026-09-16; free preview and payments active).
+
+Current status: identity registration, ten baseline reviews, and one controlled mainnet API settlement are complete. See [activation evidence](hackathon/activation.md) and the [September 19–20 round-two plan](hackathon/round-two.md). The historical setup records below must not be used to repeat registration or baseline funding.
 
 ## Completed locally
 
@@ -10,7 +12,7 @@ Live Railway domain: https://preflight-production-9071.up.railway.app (verified 
 - Separate agent and reviewer wallets, generated locally. `.secrets/wallets.env` has mode 0600 in a mode-0700 directory. It is ignored by Git, Docker and Railway upload. Do not paste its contents anywhere.
 - Agent public address: `0x7a1f16230c5F3fD3b50C435fa93035eE789eE789`.
 - Reviewer public address: `0x001bEB8140ce3372646d3197c92F3055694e1E13`.
-- User funded 4.95 USDC; identity registration succeeded. No paid API settlements, paid reviews or earnings claimed.
+- User funded 4.95 USDC; identity registration succeeded. A controlled API settlement and ten paid AskBots reviews subsequently completed; neither establishes independent customer revenue.
 - AskBots CLI dry-run succeeded: `ok=true`, `dryRun=true`, `executed=false`, 10 reviews costing 1.10 USDT.
 
 ## Registration completed on 2026-09-09
@@ -21,7 +23,7 @@ Live Railway domain: https://preflight-production-9071.up.railway.app (verified 
 - Hackathon draft `426158aa-1643-48f1-b21a-855b9478363c` saved successfully and read back with `askbots-growth` primary and `judges-favorite` additional. Both team wallets and the AskBots draft URL are recorded.
 - Official `ATTRIBUTION_TAG=celo_80fe04c6accd`, returned by Celo Builders. This must be used for every future self-sent write. The bootstrap transaction does not count under the assigned hackathon tag and cannot be retagged.
 - Local configuration contains the assigned tag and `ERC8004_AGENT_ID=9826`; the same public values are configured on Railway. Keys stay local/private. Final hackathon publication and the required real X post are pending.
-- Railway configuration deployment `8e9dcc00-ec86-424a-bbd3-f772d23ef10d` succeeded. Live `/health` returned 200; `/.well-known/agent.json` returned identity 9826 with `registration_pending=false`. Payments remain disabled.
+- Historical configuration deployment `8e9dcc00-ec86-424a-bbd3-f772d23ef10d` succeeded. Live `/health` returned 200; `/.well-known/agent.json` returned identity 9826 with `registration_pending=false`. Payments were disabled at that point and were activated later on September 9.
 - The explicit CIP-64 preparation fix passed all 29 tests, typecheck and production build before signing; the live prepared maximum fee was about 0.00631 USDC, below the unchanged 0.10 USDC cap.
 
 The initial draft save failed because the form requires an ERC-8004 URL before issuing a tag. The user authorized the custom-tag identity transaction to resolve that prerequisite. No fake identity or untagged transaction was used. Private connection and draft records remain under ignored `.secrets/`; do not repeat registration.
@@ -42,7 +44,7 @@ The sole broadcast path explicitly prepares CIP-64 and verifies chain 42220, zer
 
 The facilitator API key was created on 2026-09-09 using the agent wallet's off-chain ownership signature, with no transaction or payment. The response granted 20 mainnet and 1000 testnet settlement credits. The key is saved in ignored `.secrets/x402-key.json` and `.env` files with mode 0600, and configured as `X402_API_KEY` in Railway. Do not print or commit those files. Key creation does not require an existing ERC-8004 identity.
 
-Paid activation still requires the registered `AGENT_ADDRESS`, assigned `ATTRIBUTION_TAG`, HTTPS `PUBLIC_BASE_URL` and `PAYMENTS_ENABLED=true`. Payments remain disabled. Keep the durable SQLite volume across deployments. `/health` exposes activation status, never secrets.
+Paid activation uses the registered `AGENT_ADDRESS`, assigned `ATTRIBUTION_TAG`, HTTPS `PUBLIC_BASE_URL` and `PAYMENTS_ENABLED=true`. This configuration is now deployed and verified. Keep the durable SQLite volume across deployments. `/health` exposes activation status, never secrets.
 
 Configuration redeployment `ed4000f6-d881-4f09-96cf-c3c3ac38b325` succeeded on 2026-09-09. Public `/health` returned `status=ok` and `payments_enabled=false`. The facilitator account confirmed that the key exists. That pre-funding check showed zero balances; current registration balances are recorded above.
 
@@ -60,20 +62,20 @@ Deploy only one replica. Set `DATABASE_PATH=/data/preflight.sqlite`, `PORT=3000`
 
 Railway documents root-owned volume mounts and suggests `RAILWAY_RUN_UID=0` for non-root-image permission errors. The first deployment failed with `SQLITE_CANTOPEN`. After explicit user approval on 2026-09-08, `RAILWAY_RUN_UID=0` was applied to this dedicated production service. The Dockerfile still defaults to the non-root `node` user; Railway overrides the runtime UID to root so SQLite can use the persistent `/data` volume. Keep that volume across deployments; do not switch payment state to ephemeral storage.
 
-Deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c`. Public `/health`, `/skill.md`, and `/.well-known/agent.json` returned HTTP 200. A real `/v1/preview/counterparty` request returned HTTP 200 in about 2.1 seconds; this single measurement does not establish p95 latency. `/v1/counterparty` correctly returned HTTP 503 with `PAYMENTS_UNAVAILABLE`. At that initial deployment, identity registration was pending. It subsequently completed as recorded above; no paid API settlement has occurred.
+Historical deployment `08ea13ac-e569-426a-8647-6224843b74fd` succeeded from commit `b5d7f9c`. Public `/health`, `/skill.md`, and `/.well-known/agent.json` returned HTTP 200. A real `/v1/preview/counterparty` request returned HTTP 200 in about 2.1 seconds; this single measurement does not establish p95 latency. `/v1/counterparty` returned HTTP 503 with `PAYMENTS_UNAVAILABLE`. Identity and paid activation subsequently completed; the current settlement record is linked above.
 
 Sources: https://docs.railway.com/volumes ; https://docs.railway.com/networking/public-networking/specs-and-limits .
 
 ## AskBots round 1
 
-**Active as of 2026-09-09 17:03 UTC.** The user deposited 4.95 USDT. The existing baseline project was funded with exactly 1.10 USDT and activated through the official AskBots funding-confirmation API. Platform readback: `status=active`, `budget=10`, `paidCount=0`, `responsesReceived=0`. This requests reviews; it does not claim completed feedback.
+**Completed; rechecked September 16.** The first round has `status=completed`, `budget=10`, `paidCount=10`, `responsesReceived=10`. The user deposited 4.95 USDT and the baseline was funded with exactly 1.10 USDT. At initial activation on September 9 at 17:03 UTC, the completed count was zero; that is historical, not the current state. Preserve the original responses and use the linked next-round workflow.
 
 - Approval: https://celo.blockscout.com/tx/0x6acea7103559e335185eaff820441e8841d7202fe1325a7704e3edda61a70f28
 - Deposit: https://celo.blockscout.com/tx/0x9655f6901bd8a1237a82fe136595e64741cff1ee1b15280790f71f5733919376
 - Both receipts succeeded; both carry official tag `celo_80fe04c6accd` and the USDC fee adapter. On-chain `getProject` confirms the registered agent as creator, budget 10 and deposit 1,100,000 atomic USDT. Allowance was exactly the deposit, never unlimited.
 - Both script runs stopped during follow-up verification. Independent readback reconciled the recorded hashes, receipt/event data and escrow state; no transaction was resent. The activation request then returned `active` with the deposit hash.
 - Post-funding balances: **3.85 USDT**, **4.936866 USDC**. USDC spent across approval and deposit: **0.007927**. The second review round is not funded yet.
-- Full typecheck/build and 32 tests passed; independent spending-safety review found no blocking issue. The public baseline still has a working free preview and disabled paid checks. Preserve actual first-round feedback before claiming measured improvements.
+- At funding time, typecheck/build and 32 tests passed; independent spending-safety review found no blocking issue. Paid checks were still disabled during that baseline. They are now active; the original feedback is preserved, and no second-round improvement score is yet available.
 
 Earlier setup history:
 
@@ -81,7 +83,7 @@ Earlier setup history:
 
 The reviewer API key restriction remains `https://www.askbots.ai/api/*`. The CLI's distinct builder session token uses AskBots' own Convex backend for project creation and reads, as returned by `/api/chain` and implemented by the CLI. No reviewer API key or wallet private key is sent to that backend.
 
-Once the public service is reachable, prepare the actual URL and exclude both team wallets:
+The commands below document baseline preparation. Do not use them to create an unrelated second-round project; follow the linked [round-two workflow](hackathon/round-two.md). For any fresh baseline, use the actual URL and exclude both team wallets:
 
 ```sh
 PUBLIC_BASE_URL=https://preflight-production-9071.up.railway.app npm run review:prepare
@@ -102,7 +104,7 @@ Each signed hash is saved exclusively in ignored `data/askbots-<id>-approve.json
 
 ## Evidence for the next day
 
-Keep real settlement rows in SQLite's `payments` table. Pending rows may have an uncertain on-chain outcome; reconcile before any fresh authorization. Do not delete the database during deployment. Record AskBots findings and the subsequent fixes when real reviews arrive; there are none to invent now.
+Keep real settlement rows in SQLite's `payments` table. Pending rows may have an uncertain on-chain outcome; reconcile before any fresh authorization. Do not delete the database during deployment. Preserve the completed baseline and add second-round results only after actual reviews arrive.
 
 ## Verification recorded on 2026-09-08
 

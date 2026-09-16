@@ -7,6 +7,8 @@ The preparation branch was merged and deployed on 2026-09-09. Production x402 is
 - [Pilot outreach](distribution.md): the two published invitations; external testing is still awaiting responses.
 - [90-second demo script](demo.md): runnable commands and narration, clearly separating simulation from mainnet evidence.
 - [Change log](../../CHANGELOG.md): preparation changes mapped to the baseline findings.
+- [Round-two plan](round-two.md): September 19–20 evaluation, linked AskBots rounds and the extended September 21 deadline.
+- [Reviewer brief](reviewer-brief.md): free executable checks, practical workflows and independent feedback instructions.
 
 Run `npm run payment:rehearse` for the local-only x402 walkthrough. Its output is simulation evidence, never a Celo receipt. Run `npm run check` for type checking, tests and build.
 

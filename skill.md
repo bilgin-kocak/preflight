@@ -11,6 +11,13 @@ Base URL: `{{BASE_URL}}`. Celo mainnet only (`eip155:42220`). Read `/health` fir
 | POST | `/v1/preview/counterparty` | Free, 20/IP/UTC day | Activity signals without funder or verdict |
 | POST | `/v1/counterparty` | 0.005 USDC (5000 atomic units) | Activity, observed first funder, coverage and verdict |
 
+## Where this helps an agent
+
+- **Before preparing a send:** call the free preview for the recipient. Display observed history, its timestamp and incomplete coverage beside the confirmation. A new or unobserved wallet stays unknown; do not automatically block it or label it unsafe.
+- **When checking project-related funding:** the paid route adds an observed first funder and evaluates caller-supplied project/funder context. Missing context or incomplete history prevents a confident independence result. An address explicitly listed as a project wallet is `likely_excluded`; otherwise unresolved evidence normally yields `ambiguous`. A returned observation does not establish ownership or independence.
+
+Use preview first. Pay only if the extra funding context is useful to your actual workflow. The current hackathon's independent-party rule also requires token movement in the 60 days before August 28 (June 29–August 28). `active_before_cutoff` does not measure that window and cannot establish eligibility. [Official rules](https://celobuilders.xyz/hackathons/agents-at-work/rules).
+
 ## Try it in three steps
 
 Run these commands in order. They require only `curl` and a shell; the third request sends no payment signature and cannot authorize a payment. Use the deployed base URL below, or replace it with your own Preflight deployment.
@@ -41,6 +48,18 @@ curl -sS --max-time 60 -i "$PREFLIGHT_BASE_URL/v1/counterparty" \
 ```
 
 When payments are disabled, expect HTTP 503 with `error.code=PAYMENTS_UNAVAILABLE`. When activated, the unpaid flow returns HTTP 402 with a `PAYMENT-REQUIRED` header. Neither response proves a paid integration or settlement. The price is 0.005 USDC; the signing flow is documented below.
+
+### Capture your own evaluation in one command
+
+With Node 22+, download the [standalone evaluation script](https://github.com/bilgin-kocak/preflight/blob/main/scripts/evaluate-api.mjs), inspect it, then run:
+
+```sh
+node evaluate-api.mjs > preflight-evaluation.json
+```
+
+From a repository checkout, use `node scripts/evaluate-api.mjs` instead. No npm install, API key or wallet is needed. It makes eight unsigned requests, using one of the 20 daily free-preview calls, and records status, timing, actual response bodies and the decoded payment offer. It does not buy a report. Exit code 1 means at least one check failed; inspect the captured result rather than discarding it.
+
+To test an address of your choice, pass the HTTPS base URL and public address as the two arguments. Read the returned coverage and form your own assessment; passing checks are not a quality score. If your environment cannot make HTTP calls, explicitly report that limitation rather than describing an unexecuted example as a test. [Independent review brief](https://github.com/bilgin-kocak/preflight/blob/main/docs/hackathon/reviewer-brief.md).
 
 ### Captured preview snapshot — 2026-09-09 UTC
 
@@ -121,6 +140,8 @@ Read these field-level coverage flags alongside the signals. They describe avail
 The preview already includes `coverage`, `observed_at`, and a heuristic `limitation` at report level. Detailed `warnings` are available on the paid report; the preview does not expose those warnings.
 
 Errors are `{ "error": { "code": "...", "message": "...", "hint": "..." } }`.
+
+Invalid request fields also include `error.issues`, so an agent can fix a payload without guessing or paying. For example, an invalid first project wallet produces an issue with `path: "project_wallets.0"`; a top-level shape or unknown-field error uses `path: "$"`. Each issue includes `code` and `message`. Validation happens before payment verification. A degraded `/health` response returns HTTP 503 while retaining `status`, `providers`, `current_block` and an actionable error.
 
 | Status | Meaning / action |
 | --- | --- |

@@ -9,6 +9,24 @@ Celo counterparty signals for agents before they move money. Built for the Agent
 - [Launch steps and blockers](docs/launch.md)
 - [Build spec](preflight-spec.md)
 
+## Evaluate the live API without a wallet
+
+From this checkout, with Node 22+ (no dependency installation needed for this command):
+
+```sh
+node scripts/evaluate-api.mjs > preflight-evaluation.json
+```
+
+This makes eight unsigned HTTP requests, consumes one free-preview request, and saves actual responses, status codes and latency. It checks discovery, health, instructions, identity, preview, field-level errors and the exact 0.005 USDC payment offer. It never signs or pays. Exit code 0 means the API contract checks passed; it is not a usefulness rating or eligibility decision. Incomplete history is recorded honestly and does not itself fail a check.
+
+To inspect a public address you choose:
+
+```sh
+node scripts/evaluate-api.mjs https://preflight-production-9071.up.railway.app 0x23Ca5C88009B94aA554dC37beE88517C92f7c07a > preflight-evaluation.json
+```
+
+See the [review brief](docs/hackathon/reviewer-brief.md) for concrete workflows and what evidence to include in feedback.
+
 ## Run locally
 
 Requires Node 22+ and npm. SQLite is stored in `data/preflight.sqlite`.
@@ -61,6 +79,6 @@ Tests cover payment signatures, failed settlement, concurrent replay, provider o
 
 Dockerfile and `railway.json` are included. Use one replica and a persistent volume at `/data`; SQLite contains payment replay records and quotas and must survive redeploys. Railway's edge supplies `X-Real-IP`; only set `TRUST_RAILWAY_PROXY=true` there. The Docker image defaults to the non-root `node` user; the dedicated Railway service uses the explicitly approved `RAILWAY_RUN_UID=0` override for volume access. See [launch steps](docs/launch.md) for deployment verification and pending external setup.
 
-The [live free preview service](https://preflight-production-9071.up.railway.app) is available. [ERC-8004 agent #9826](https://8004scan.io/agents/celo/9826) and the hackathon draft are registered. Payments remain disabled. The first AskBots baseline round is funded and active; completed reviews are still pending.
+The [live service](https://preflight-production-9071.up.railway.app) offers free previews and active x402 payments. [ERC-8004 agent #9826](https://8004scan.io/agents/celo/9826) and the hackathon draft are registered. The baseline completed ten reviews, and a [controlled mainnet purchase](docs/hackathon/activation.md) verified settlement and replay protection. The second round is being prepared for September 19–20, ahead of the extended September 21 deadline. See the [round-two plan](docs/hackathon/round-two.md).
 
 Day 2+ features are intentionally absent: signed reports, batch, contract checks, tags endpoint, attestations, MCP, CLI and OpenAPI. The service is an API, with a JSON discovery response at `/`.

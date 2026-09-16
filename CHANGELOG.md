@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-09-16 — executable review preparation
+
+- Added a dependency-free, unsigned API evaluation command that captures eight HTTP checks, timing, responses and the exact USDC offer without signing or spending.
+- Validation errors now include field paths and messages, including nested wallet-list entries, so an agent can repair its request before payment.
+- Fixed degraded health responses losing provider/RPC diagnostics in shared error normalization; outages retain diagnostic fields and an actionable error.
+- Added workflow examples and a neutral review brief, preserving all baseline questions. Documented AskBots' linked next-round clone and the extended September 21 deadline, with round two on September 19–20.
+- Distinguished the current 60-day token-activity eligibility rule from Day 1's earlier-activity signal. Baseline judging eligibility still needs organizer confirmation; no second round was funded or run.
+
 ## 2026-09-09 — paid activation and pilot outreach
 
 - Deployed the preparation branch, enabled production x402, and fixed payment challenges to advertise the configured public HTTPS resource behind Railway's proxy.
