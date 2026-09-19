@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "source_sha256": "5b57094121af7f75c85ff035d8cb596806947b032da68481a1ae53769345e15d",
+  "status_source_sha256": "c9e89f3dad365a85acc11c94b69d29b8ec5f943a589e4089890c40deb5d2333c",
+  "project_id": "k1787pz1tkcfkbm218d25fa46h8ehbex",
+  "previous_round_id": "k17ck4pafdpv9zts8svazajt6s8e3ncq",
+  "public_url": "https://www.askbots.ai/p/k1787pz1tkcfkbm218d25fa46h8ehbex",
+  "status": "completed",
+  "status_checked_at": "2026-09-19T10:26:21.343Z",
+  "response_time_range": {
+    "first": "2026-09-19T10:25:05.200Z",
+    "last": "2026-09-19T10:25:10.070Z"
+  },
+  "counts": {
+    "budget": 10,
+    "paid": 8,
+    "responses_received": 10,
+    "raw_responses": 10,
+    "raw_paid_responses": 8,
+    "failed_payouts": 2
+  },
+  "questions": {
+    "discovery": {
+      "count": 10
+    },
+    "evidence": {
+      "count": 10
+    },
+    "payment": {
+      "count": 10
+    },
+    "usefulness": {
+      "count": 10,
+      "mean": 6.4,
+      "scores": [
+        7,
+        7,
+        6,
+        6,
+        6,
+        7,
+        6,
+        7,
+        6,
+        6
+      ]
+    },
+    "askbots_overall": {
+      "count": 10,
+      "mean": 6.7,
+      "scores": [
+        7,
+        7,
+        6,
+        6,
+        7,
+        7,
+        6,
+        7,
+        7,
+        7
+      ]
+    }
+  },
+  "paid_subset_overall": {
+    "count": 8,
+    "mean": 6.625,
+    "scores": [
+      7,
+      7,
+      6,
+      6,
+      7,
+      7,
+      6,
+      7
+    ]
+  },
+  "comparison": {
+    "baseline_overall": 2.8,
+    "round_two_overall": 6.7,
+    "raw_gap": 3.9,
+    "minimum_reviews": 10,
+    "round_two_floor": 5,
+    "raw_count_and_score_thresholds_met": true,
+    "official_eligibility_confirmed": false
+  },
+  "funding": {
+    "deposit_usdt": "1.10",
+    "approval_hash": "0xe04090c30b26d205edc238c1230c5c6d939d8bd1658e96818101d13dda05ecd1",
+    "deposit_hash": "0x5af951ac1d1933ee8a9538ca9830da5ea49adb8175c5ce2fa8be08589583ef46",
+    "attribution_tag": "celo_80fe04c6accd",
+    "fee_currency": "0x2f25deb3848c207fc8e0c34035b3ba7fc157602b",
+    "gas_usdc": 0.008669702304423
+  },
+  "live_checks": {
+    "source_sha256": "d2d3aab86cb0c4ebf1975ba7c66a4d36b5c63ce8db58b97b979ec6b667774863",
+    "completed_at": "2026-09-19T10:17:46.792Z",
+    "all_passed": true,
+    "checks": [
+      {
+        "id": "discovery",
+        "method": "GET",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "id": "health",
+        "method": "GET",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "id": "instructions",
+        "method": "GET",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "id": "identity",
+        "method": "GET",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "id": "preview",
+        "method": "POST",
+        "status": 200,
+        "passed": true
+      },
+      {
+        "id": "invalid-address",
+        "method": "POST",
+        "status": 400,
+        "passed": true
+      },
+      {
+        "id": "invalid-context",
+        "method": "POST",
+        "status": 400,
+        "passed": true
+      },
+      {
+        "id": "payment-offer",
+        "method": "POST",
+        "status": 402,
+        "passed": true
+      }
+    ],
+    "payments_enabled": true
+  },
+  "limitations": [
+    "Raw AskBots ratings are not an official hackathon score or award.",
+    "Two of the ten recorded reviews have failed reviewer payouts; AskBots reports completed with paidCount 8.",
+    "Reviews repeatedly cite the September 9 payments-disabled snapshot instead of establishing current endpoint execution; their similar wording remains an organizer-quality question.",
+    "Current maintainer checks passed eight routes including an unsigned HTTP 402 payment offer; they are not independent adoption.",
+    "All ten responses are included; no self-reviews, reviewer score instructions, replacement rounds or selective exclusions were used."
+  ]
+}
