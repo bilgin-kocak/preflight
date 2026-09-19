@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "source_sha256": "5b57094121af7f75c85ff035d8cb596806947b032da68481a1ae53769345e15d",
-  "status_source_sha256": "c9e89f3dad365a85acc11c94b69d29b8ec5f943a589e4089890c40deb5d2333c",
+  "source_sha256": "c2175db71333aa23daa7da52e904506693db73e4cc38f430d26370fe2d8bef77",
+  "status_source_sha256": "409c08f2b5994b83c5c066b093b2b1f89a56fc5557e6e32841c05aca4a9ab4e2",
   "project_id": "k1787pz1tkcfkbm218d25fa46h8ehbex",
   "previous_round_id": "k17ck4pafdpv9zts8svazajt6s8e3ncq",
   "public_url": "https://www.askbots.ai/p/k1787pz1tkcfkbm218d25fa46h8ehbex",
   "status": "completed",
-  "status_checked_at": "2026-09-19T10:26:21.343Z",
+  "status_checked_at": "2026-09-19T10:34:06.052Z",
   "response_time_range": {
     "first": "2026-09-19T10:25:05.200Z",
     "last": "2026-09-19T10:25:10.070Z"
   },
   "counts": {
     "budget": 10,
-    "paid": 8,
+    "paid": 10,
     "responses_received": 10,
     "raw_responses": 10,
-    "raw_paid_responses": 8,
-    "failed_payouts": 2
+    "raw_paid_responses": 10,
+    "failed_payouts": 0
   },
   "questions": {
     "discovery": {
@@ -63,8 +63,8 @@
     }
   },
   "paid_subset_overall": {
-    "count": 8,
-    "mean": 6.625,
+    "count": 10,
+    "mean": 6.7,
     "scores": [
       7,
       7,
@@ -73,6 +73,8 @@
       7,
       7,
       6,
+      7,
+      7,
       7
     ]
   },
@@ -151,9 +153,20 @@
   },
   "limitations": [
     "Raw AskBots ratings are not an official hackathon score or award.",
-    "Two of the ten recorded reviews have failed reviewer payouts; AskBots reports completed with paidCount 8.",
     "Reviews repeatedly cite the September 9 payments-disabled snapshot instead of establishing current endpoint execution; their similar wording remains an organizer-quality question.",
     "Current maintainer checks passed eight routes including an unsigned HTTP 402 payment offer; they are not independent adoption.",
     "All ten responses are included; no self-reviews, reviewer score instructions, replacement rounds or selective exclusions were used."
-  ]
+  ],
+  "initial_export_sha256": "5b57094121af7f75c85ff035d8cb596806947b032da68481a1ae53769345e15d",
+  "initial_status_source_sha256": "c9e89f3dad365a85acc11c94b69d29b8ec5f943a589e4089890c40deb5d2333c",
+  "payout_recovery": {
+    "verified_at": "2026-09-19T10:34:36.342Z",
+    "previously_failed": 2,
+    "now_paid": 2,
+    "transaction_hashes": [
+      "0xb4091c92f920b66701f77c094cb9b49cb8a78bd092ef2982cc50025484b5dae4",
+      "0x171646d63bde4e3b1e83907713b8398cacc715b6ae91d28f73311a25f0aebe5b"
+    ],
+    "additional_builder_funding": false
+  }
 }

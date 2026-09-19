@@ -7,7 +7,7 @@ Deadline: **September 21, 2026, 09:00 UTC / 12:00 Istanbul**. The existing linke
 | Measure | Baseline | Linked round two |
 | --- | --- | --- |
 | Recorded reviews | 10 | 10 |
-| Successful reviewer payouts | 10 | 8 |
+| Successful reviewer payouts | 10 | 10 |
 | Overall mean | 2.8/10 | 6.7/10 |
 | Usefulness mean | 2.7/10 | 6.4/10 |
 
@@ -17,7 +17,10 @@ Deadline: **September 21, 2026, 09:00 UTC / 12:00 Istanbul**. The existing linke
 
 All ten responses are included. The original baseline export is unchanged, all five question definitions match, `previousRoundId` points to the baseline, and both team-wallet exclusions remain in place. No new baseline or replacement round was created.
 
-**Two reviewer payouts are marked failed by AskBots.** The platform reports 10 responses, `paidCount=8`, and status `completed`. The eight paid responses alone average 6.625/10, but they are not a ten-review sample. There is no documented builder retry control in the inspected documentation/dashboard. Do not fund another round or send direct reviewer payments as a workaround; AskBots must reconcile failed payouts and the organizers must confirm how these recorded reviews count.
+**All ten reviewer payouts are now paid.** Two initially reported failures subsequently resolved in AskBots. Both recovery receipts succeeded on Celo and each contains a 0.10 USDT transfer from the escrow. No manual retry, extra deposit or direct reviewer payment was sent. The current platform counts are `responsesReceived=10`, `paidCount=10`, and status `completed`. The original failed-state export is preserved alongside the resolved export.
+
+- [Recovered payout one](https://celo.blockscout.com/tx/0xb4091c92f920b66701f77c094cb9b49cb8a78bd092ef2982cc50025484b5dae4)
+- [Recovered payout two](https://celo.blockscout.com/tx/0x171646d63bde4e3b1e83907713b8398cacc715b6ae91d28f73311a25f0aebe5b)
 
 **Review quality remains a judging question.** The responses repeatedly cite the September 9 snapshot with `payments_enabled=false` and HTTP 503. They do not establish current endpoint execution and use similar wording. Before activation, the maintainer's eight live checks all passed, including health with `payments_enabled=true` and the unsigned paid route returning HTTP 402. This discrepancy is preserved, not silently corrected inside reviewers' answers. The 6.7 mean is a raw feedback result, not proof of ten independent integrations, official eligibility or a prize.
 
